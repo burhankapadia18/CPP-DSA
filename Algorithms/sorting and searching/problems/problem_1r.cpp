@@ -30,8 +30,8 @@ void file_i_o()
     cin.tie(0);
     cout.tie(0);
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/Desktop/C++14/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/Desktop/C++14/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 }
 
@@ -43,6 +43,31 @@ rotated. you also have a target, find the psoition of the target.
 
 n <= 10^7
 */
+int binarySearchOnRotated(int *arr, int n, int target)
+{
+    int lo = 0, hi = n-1;
+    while (lo <= hi)
+    {
+        int mi = mid(lo,hi); 
+        if(arr[mi] == target)
+            return mi;
+        else if(arr[mi] >= arr[lo])
+        {   // case 1
+            if(target >= arr[lo] and target <= arr[mi])
+                hi = mi - 1;
+            else    
+                lo = mi + 1;
+        }
+        else 
+        {   // case 2
+            if(target >= arr[mi] and target <= arr[hi])
+                lo = mi + 1;
+            else 
+                hi = mi - 1;
+        }
+    }
+    return -1;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -50,6 +75,14 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1)
+        cin>>arr[i];
+    int target;
+    cin>>target;
+    cout<<binarySearchOnRotated(arr,n,target);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

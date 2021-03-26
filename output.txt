@@ -1,3 +1,3 @@
-YES
+1 1 2 4 3 
 
-Executed in: 0.231 ms
+Executed in: 0.159 ms

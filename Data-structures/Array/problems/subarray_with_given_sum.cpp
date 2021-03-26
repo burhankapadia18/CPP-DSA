@@ -1,7 +1,7 @@
 #include<iostream>
 using namespace std;
 
-void subarray_with_given_sum(int a[], int n, int sum){
+void subarray_with_given_sum(int a[], int n, int sum) {
     int currsum=0;
     /*
     brutefore
@@ -45,8 +45,8 @@ void subarray_with_given_sum(int a[], int n, int sum){
 int main() {
 
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 
     int n;

@@ -6,8 +6,8 @@ void file_i_o()
     cin.tie(0);
     cout.tie(0);
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/Desktop/C++14/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/Desktop/C++14/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 }
 
