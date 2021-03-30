@@ -32,8 +32,7 @@ class bin_tree
 	bin_tree()
 	{
 		root = NULL;
-	}
-	
+	}	
 	void insert(int data)
 	{
 		node *newNode = new node(data), *temp;
