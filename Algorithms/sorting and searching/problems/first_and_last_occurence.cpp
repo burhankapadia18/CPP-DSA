@@ -35,40 +35,34 @@ void file_i_o()
     #endif
 }
 
-/*
-https://practice.geeksforgeeks.org/problems/job-sequencing-problem-1587115620/1
-*/
-bool cmp(pair<int,pair<int,int> > a, pair<int,pair<int,int> > b) {
-    return (a.ss.ss>b.ss.ss);
-}
-void jobSequencing(vector<pair<int,pair<int,int> > > &jobs)
-{
-    // sort in decreasing order of profit
-    sort(jobs.begin(),jobs.end(),cmp);
-    int slots = jobs.size(), profit = 0;
-    // to keep the track of free time slots
-    vector<bool> result(slots,0);
-    // to store the result
-    vector<int> ans;
-    // iterate over all the jobs
-    for(int i=0; i<jobs.size(); ++i)
-    {   // find a free slot for the current job
-        // we find the slot form the end
-        int j = min(slots-1,jobs[i].ss.ff-1);
-        for(; j>=0; j--)
-        {
-            if(!result[j]) {
-                // empty slot found 
-                result[j] = 1;
-                ans.push_back(jobs[i].ff);
-                profit += jobs[i].ss.ss;
-                break;
-            }
-        }
+// https://practice.geeksforgeeks.org/problems/first-and-last-occurrences-of-x3116/1
+
+int first(int arr[], int n, int x) {
+    int lo = 0, hi = n-1;
+    while(lo <= hi) {
+        int mid_ = mid(lo,hi);
+        if((mid_ == 0 or arr[mid_-1] < x) and arr[mid_] == x)
+            return mid_;
+        else if(arr[mid_] < x)
+            lo = mid_ + 1;
+        else 
+            hi = mid_ - 1;
     }
-    cout<<profit<<endl;
-    for(auto i:ans)
-        cout<<i<<" ";
+    return -1;
+}
+int last(int arr[], int n ,int x)
+{   
+    int hi = n-1, lo = 0;
+    while(lo <= hi) {
+        int mid_ = mid(lo,hi);
+        if((mid_ == n - 1 or x < arr[mid_+1]) and arr[mid_] == x)
+            return mid_;
+        else if (x < arr[mid_])
+            hi = mid_ - 1;
+        else
+            lo = mid_ + 1;
+    }
+    return -1;
 }
 
 int main(int argc, char const *argv[])
@@ -77,12 +71,15 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    vector<pair<int,pair<int,int> > > jobs;
-    int job_id, deadline, profit;
-    while(cin>>job_id>>deadline>>profit)
-        jobs.push_back(make_pair(job_id,make_pair(deadline,profit)));
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1)
+        cin>>arr[i];
+    int x;
+    cin>>x;
 
-    jobSequencing(jobs);
+    cout<<first(arr,n,x)<<" "<<last(arr,n,x);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -6,8 +6,8 @@ void file_i_o()
     cin.tie(0);
     cout.tie(0);
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/output.txt","w",stdout);
     #endif
 }
 
@@ -426,8 +426,7 @@ class bin_tree
 		return NULL;
 	}
 	node *LCA(node *root, node *a, node *b)
-	{
-		/*
+	{	/*
 		algorithm for finding LCA (Least Common Ancestor) of two nodes 
 		in a Binary Tree
 		*/
@@ -436,7 +435,7 @@ class bin_tree
 
 		if(root == a || root == b)
 			return root;
-
+		
 		node *left = LCA(root->left,a,b);
 		node *right = LCA(root->right,a,b);
 		if(left != NULL && right != NULL)
