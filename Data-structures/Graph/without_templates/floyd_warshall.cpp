@@ -44,13 +44,36 @@ Floyd-Warshall Algorithm :-
     -> easy to implement
 */
 
-
 int main(int argc, char const *argv[])
 {
     clock_t begin = clock();
     file_i_o();
 
     // write your code here
+    int n, m;
+    cin>>n>>m;
+    vector<vector<int> > d(n+1,vector<int> (n+1,INT_MAX));
+    while(m--) {
+        int u, v, w;
+        cin>>u>>v>>w;
+        d[u][v] = min(d[u][v],w); // to handle multiple edges
+        // if undirected
+        d[v][u] = min(d[v][u],w); // to handle multiple edges
+    }
+    loop(i,1,n)
+        // distance to same vertex is zero
+        d[i][i] = 0;
+    loop(k,1,n) {
+        loop(i,1,n) {
+            loop(j,1,n) {
+                if(d[i][k] != INT_MAX and d[k][j] != INT_MAX) {
+                    // updates d[i][j] if path from i to j is
+                    // greater than path from i to k + k to j
+                    d[i][j] = min(d[i][j],d[i][k]+d[k][j]);
+                }
+            }
+        }
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
