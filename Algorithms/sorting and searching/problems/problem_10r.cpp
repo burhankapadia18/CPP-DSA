@@ -35,25 +35,35 @@ void file_i_o()
     #endif
 }
 
+// https://www.geeksforgeeks.org/searching-array-adjacent-differ-k/
+
+int solve(int arr[], int n, int k, int x) {
+    int ans = -1;
+    int diff, i=0;
+    while(i<n) {
+        if(arr[i] == x) {
+            ans = i;
+            break;
+        }
+        diff = max(abs(arr[i]-x)/k,1);
+        i += diff;
+    }
+    return ans;
+}
+
 int main(int argc, char const *argv[])
 {
     clock_t begin = clock();
     file_i_o();
 
     // write your code here
-    int n;
+    int n, k, x;
     cin>>n;
-    vector<int> arr(n);
-    loop(i,0,n-1)
-        cin>>arr[i];
-    int target;
-    cin>>target; 
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    cin>>k>>x;
 
-    // points to first element gerater than or equal to x
-    cout<<lower_bound(arr.begin(),arr.end(),target)-arr.begin()<<endl;
-
-    // points to first element gerater than x
-    cout<<upper_bound(arr.begin(),arr.end(),target)-arr.begin()<<endl;
+    cout<<solve(arr,n,k,x);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

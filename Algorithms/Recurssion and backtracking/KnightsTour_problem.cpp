@@ -12,10 +12,6 @@ void file_i_o()
     #endif
 }
 
-bool isSafe(int n, int i, int j, vector<vector<int> > &grid)
-{
-    return i>=0 && j>=0 && i<n && j<n && grid[i][j]==-1;
-}
 void display(vector<vector<int> > &grid, int n)
 {
     for(int i=0; i<n; i++)
@@ -25,6 +21,10 @@ void display(vector<vector<int> > &grid, int n)
         cout<<'\n';
     }
     cout<<'\n';
+}
+bool isSafe(int n, int i, int j, vector<vector<int> > &grid)
+{
+    return i>=0 && j>=0 && i<n && j<n && grid[i][j]==-1;
 }
 void knightsTour(vector<vector<int> > &grid, int n, int i, int j, int ctr)
 {

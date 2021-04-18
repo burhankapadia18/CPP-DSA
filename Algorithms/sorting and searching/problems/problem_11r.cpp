@@ -35,6 +35,38 @@ void file_i_o()
     #endif
 }
 
+// https://practice.geeksforgeeks.org/problems/find-pair-given-difference/0
+
+// tc-O(n)  sc-O(n)
+int findPair(int arr[], int n, int k) {
+    int ans = -1;
+    ump<int,bool> mp;
+    loop(i,0,n-1)
+        mp[arr[i]] = 1;
+    loop(i,0,n-1) {
+        int x = arr[i] + k;
+        if(mp[x]) {
+            ans = 1;
+            break;
+        }
+    }
+    return ans;
+}
+
+// tc-O(nlogn) sc-O(1)
+int findPair_(int arr[], int n, int k) {
+    sort(arr,arr+n);
+    int ans = -1;
+    loop(i,0,n-1) {
+        int idx = upper_bound(arr+i+1,arr+n,arr[i]+k)-arr-1;
+        if(arr[idx]-arr[i] == k) {
+            ans = 1;
+            break;
+        }
+    }
+    return ans;
+}
+
 int main(int argc, char const *argv[])
 {
     clock_t begin = clock();
@@ -43,17 +75,12 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
-    vector<int> arr(n);
-    loop(i,0,n-1)
-        cin>>arr[i];
-    int target;
-    cin>>target; 
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    int k;
+    cin>>k;
 
-    // points to first element gerater than or equal to x
-    cout<<lower_bound(arr.begin(),arr.end(),target)-arr.begin()<<endl;
-
-    // points to first element gerater than x
-    cout<<upper_bound(arr.begin(),arr.end(),target)-arr.begin()<<endl;
+    cout<<findPair(arr,n,k)<<" "<<findPair_(arr,n,k);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
