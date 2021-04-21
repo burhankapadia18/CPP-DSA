@@ -35,28 +35,36 @@ void file_i_o()
     #endif
 }
 
-// https://www.spoj.com/problems/GNYR09F/
+// https://www.geeksforgeeks.org/weighted-job-scheduling-log-n-time/
 
-int dp[105][105][2];
-ll AdjBc(int n, int k, int f) {
-    if(n == 0)
-        return 0;
-    if(n == 1) {
-        if(k == 0)
-            return 1;
-        else 
-            return 0;
+bool cmp(vector<int> a, vector<int> b) {
+    return a[1] < b[1];
+}
+int weightedjobScheduling(vector<vector<int> > &jobs) {
+    int n = jobs.size();
+    sort(jobs.begin(),jobs.end(),cmp);
+    vector<int> dp(n);
+    dp[0] = jobs[0][2];
+    loop(i,1,n-1) {
+        int inc = jobs[i][2];
+        int last = -1;
+        int lo = 0, hi = i-1;
+        while(lo <= hi) {
+            int mi = mid(lo,hi);
+            if(jobs[mi][1] <= jobs[i][0]) {
+                last = mi;
+                lo = mi + 1;
+            }
+            else 
+                hi = mi - 1;
+        }
+        if(last != -1)
+            inc += dp[last];
+        int exc = dp[i-1];
+        dp[i] = max(inc,exc);
+        cout<<inc<<" "<<exc<<" "<<endl;
     }
-
-    if(dp[n][k][f] != -1)
-        return dp[n][k][f];
-    ll result = -1;
-    if(f == 0)
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k,1);
-    else 
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k-1,1); 
-
-    return dp[n][k][f] = result; 
+    return dp[n-1];
 }
 
 int main(int argc, char const *argv[])
@@ -65,17 +73,18 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    ll t;
-    cin>>t;
-    while(t--) {
-        ll num, n, k;
-        cin>>num>>n>>k;
-        memset(dp,-1,sizeof(dp));
-        ll ans  = 0;
-        ans += AdjBc(n,k,0);
-        ans += AdjBc(n,k,1);
-        cout<<num<<" "<<ans<<endl;
+    int n;
+    cin>>n;
+    vector<vector<int> > jobs(n,vector<int> (3));
+    int st, en, wt;
+    loop(i,0,n-1) {
+        cin>>st>>en>>wt;
+        jobs[i][0] = st;
+        jobs[i][1] = en;
+        jobs[i][2] = wt;
     }
+
+    cout<<weightedjobScheduling(jobs);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

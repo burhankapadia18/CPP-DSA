@@ -35,28 +35,51 @@ void file_i_o()
     #endif
 }
 
-// https://www.spoj.com/problems/GNYR09F/
+/*
+Given an number x, you can do 3 differnt operations on x.
+    1. subtract 1 from x
+    2. if x is divisible by 2, then divide it by 2
+    3. if x is divisible by 3, then divide it by 3
+find no. of operations to reduce x to 1.
+*/
 
-int dp[105][105][2];
-ll AdjBc(int n, int k, int f) {
-    if(n == 0)
+// top down approach
+int minStepsToOneTD(int x, vector<int> &dp) {
+    if(x == 2 or x == 3)
+        return 1;
+    if(x == 1)
         return 0;
-    if(n == 1) {
-        if(k == 0)
-            return 1;
-        else 
-            return 0;
+    if(x < 1)
+        return INT_MAX;
+    if(dp[x] != 0)
+        return dp[x];
+    int div2, div3, sub1;
+    div2 = div3 = sub1 = INT_MAX;
+    if(x%2 == 0)
+        div2 = 1 + minStepsToOneTD(x/2,dp);
+    if(x%3 == 0)
+        div3 = 1 + minStepsToOneTD(x/3,dp);
+    sub1 = 1 + minStepsToOneTD(x-1,dp);
+    return dp[x] = min(sub1,min(div2,div3));
+}
+
+// bottom up approach
+int minStepsToOneBU(int x) {
+    vector<int> dp(x+1);
+    dp[0] = INT_MAX;
+    dp[1] = 0;
+    dp[2] = dp[3] = 1;
+    loop(i,4,x) {
+        int div2, div3, sub1;
+        div2 = div3 = sub1 = INT_MAX;
+        if(i%2 == 0)
+            div2 = 1 + dp[i/2];
+        if(i%3 == 0)
+            div3 = 1 + dp[i/3];
+        sub1 = 1 + dp[i-1];
+        dp[i] = min(sub1,min(div2,div3));
     }
-
-    if(dp[n][k][f] != -1)
-        return dp[n][k][f];
-    ll result = -1;
-    if(f == 0)
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k,1);
-    else 
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k-1,1); 
-
-    return dp[n][k][f] = result; 
+    return dp[x];
 }
 
 int main(int argc, char const *argv[])
@@ -65,17 +88,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    ll t;
-    cin>>t;
-    while(t--) {
-        ll num, n, k;
-        cin>>num>>n>>k;
-        memset(dp,-1,sizeof(dp));
-        ll ans  = 0;
-        ans += AdjBc(n,k,0);
-        ans += AdjBc(n,k,1);
-        cout<<num<<" "<<ans<<endl;
-    }
+    int x;
+    cin>>x;
+    vector<int> dp(x+1,0);
+    cout<<minStepsToOneTD(x,dp)<<" "<<minStepsToOneBU(x);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

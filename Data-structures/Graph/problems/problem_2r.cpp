@@ -49,6 +49,7 @@ n <= 3x10^5
 
 ll n;
 ll countRed=0, countBlue=0;
+ll ans = 0;
 pii dfs(list<int> graph[], char colors[], ll src, ll parent = -1)
 {
     ll r = (colors[src]=='A');
@@ -64,7 +65,7 @@ pii dfs(list<int> graph[], char colors[], ll src, ll parent = -1)
             b += result.ss;
         }
     }
-    return make_pair(r,c);
+    return make_pair(r,b);
 }
 
 int main(int argc, char const *argv[])

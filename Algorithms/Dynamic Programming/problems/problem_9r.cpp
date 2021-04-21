@@ -36,6 +36,7 @@ void file_i_o()
 }
 
 // https://www.geeksforgeeks.org/count-number-of-sub-sequences-with-gcd-1/
+
 int gcd__(int a, int b) {
     if(a < b) return gcd__(b,a);
     if(b == 0) return a;

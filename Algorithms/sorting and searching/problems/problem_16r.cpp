@@ -35,29 +35,7 @@ void file_i_o()
     #endif
 }
 
-// https://www.spoj.com/problems/GNYR09F/
-
-int dp[105][105][2];
-ll AdjBc(int n, int k, int f) {
-    if(n == 0)
-        return 0;
-    if(n == 1) {
-        if(k == 0)
-            return 1;
-        else 
-            return 0;
-    }
-
-    if(dp[n][k][f] != -1)
-        return dp[n][k][f];
-    ll result = -1;
-    if(f == 0)
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k,1);
-    else 
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k-1,1); 
-
-    return dp[n][k][f] = result; 
-}
+// https://www.hackerearth.com/practice/algorithms/searching/binary-search/practice-problems/algorithm/bishu-and-soldiers/
 
 int main(int argc, char const *argv[])
 {
@@ -65,16 +43,21 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    ll t;
-    cin>>t;
-    while(t--) {
-        ll num, n, k;
-        cin>>num>>n>>k;
-        memset(dp,-1,sizeof(dp));
-        ll ans  = 0;
-        ans += AdjBc(n,k,0);
-        ans += AdjBc(n,k,1);
-        cout<<num<<" "<<ans<<endl;
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    int preSum[n];
+    preSum[0] = arr[0];
+    loop(i,1,n-1)
+        preSum[i] = arr[i] + preSum[i-1];
+    int q;
+    cin>>q;
+    while(q--) {
+        int x;
+        cin>>x;
+        int idx = upper_bound(arr,arr+n,x)-arr;
+        cout<<idx<<" "<<preSum[idx-1]<<endl;
     }
 
     #ifndef ONLINE_JUDGE

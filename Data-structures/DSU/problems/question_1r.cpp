@@ -54,7 +54,7 @@ void Union(vi &parent, ll left, ll right)
 {
     left = Get(parent,left);
     right = Get(parent,right);
-    parent[left] = right
+    parent[left] = right;
 }
 
 int main(int argc, char const *argv[])
@@ -80,7 +80,7 @@ int main(int argc, char const *argv[])
             Union(parent,x,x+1);
         else 
         {
-            ll result = Get(x);
+            ll result = Get(parent,x);
             if(result == n+1)
                 cout<<-1<<endl;
             else 

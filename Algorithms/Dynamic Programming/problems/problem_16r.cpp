@@ -35,28 +35,36 @@ void file_i_o()
     #endif
 }
 
-// https://www.spoj.com/problems/GNYR09F/
+// https://practice.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1
 
-int dp[105][105][2];
-ll AdjBc(int n, int k, int f) {
-    if(n == 0)
-        return 0;
-    if(n == 1) {
-        if(k == 0)
-            return 1;
-        else 
-            return 0;
+// brute force
+int solve(int arr[], int n, int x) {
+    int ans = 0;
+    loop(i,0,n-1)
+        loop(j,i+1,n-1)
+            loop(k,j+1,n-1)
+                if(arr[i]+arr[j]+arr[k] < x)
+                    ans++;
+    return ans;
+}
+
+// optimized
+int solve_(int arr[], int n, int x) {
+    int ans = 0;
+    sort(arr,arr+n);
+    loop(k,0,n-3) {
+        int i = k+1, j = n-1;
+        while(i<j) {
+            int s = arr[i]+arr[j]+arr[k];
+            if(s < x) {
+                ans += (j-i);
+                i++;
+            }
+            else 
+                j--;    
+        }
     }
-
-    if(dp[n][k][f] != -1)
-        return dp[n][k][f];
-    ll result = -1;
-    if(f == 0)
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k,1);
-    else 
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k-1,1); 
-
-    return dp[n][k][f] = result; 
+    return ans;
 }
 
 int main(int argc, char const *argv[])
@@ -65,17 +73,14 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    ll t;
-    cin>>t;
-    while(t--) {
-        ll num, n, k;
-        cin>>num>>n>>k;
-        memset(dp,-1,sizeof(dp));
-        ll ans  = 0;
-        ans += AdjBc(n,k,0);
-        ans += AdjBc(n,k,1);
-        cout<<num<<" "<<ans<<endl;
-    }
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    int x;
+    cin>>x;
+    
+    cout<<solve(arr,n,x)<<" "<<solve_(arr,n,x);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

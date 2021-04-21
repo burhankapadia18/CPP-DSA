@@ -35,28 +35,16 @@ void file_i_o()
     #endif
 }
 
-// https://www.spoj.com/problems/GNYR09F/
+// https://practice.geeksforgeeks.org/problems/stickler-theif/0
 
-int dp[105][105][2];
-ll AdjBc(int n, int k, int f) {
-    if(n == 0)
+int solve(int arr[], int n, vector<int> &dp) {
+    if(n < 0)
         return 0;
-    if(n == 1) {
-        if(k == 0)
-            return 1;
-        else 
-            return 0;
-    }
-
-    if(dp[n][k][f] != -1)
-        return dp[n][k][f];
-    ll result = -1;
-    if(f == 0)
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k,1);
-    else 
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k-1,1); 
-
-    return dp[n][k][f] = result; 
+    if(dp[n] != -1)
+        return dp[n];
+    int opt1 = arr[n] + solve(arr,n-2,dp);
+    int opt2 = solve(arr,n-1,dp);
+    return dp[n] = max(opt1,opt2);
 }
 
 int main(int argc, char const *argv[])
@@ -65,16 +53,15 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    ll t;
+    int t;
     cin>>t;
-    while(t--) {
-        ll num, n, k;
-        cin>>num>>n>>k;
-        memset(dp,-1,sizeof(dp));
-        ll ans  = 0;
-        ans += AdjBc(n,k,0);
-        ans += AdjBc(n,k,1);
-        cout<<num<<" "<<ans<<endl;
+    while(t--){
+        int n;
+        cin>>n;
+        int arr[n];
+        loop(i,0,n-1) cin>>arr[i];
+        vector<int> dp(n,-1);
+        cout<<solve(arr,n-1,dp);
     }
 
     #ifndef ONLINE_JUDGE

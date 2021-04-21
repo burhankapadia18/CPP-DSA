@@ -35,28 +35,37 @@ void file_i_o()
     #endif
 }
 
-// https://www.spoj.com/problems/GNYR09F/
+// https://leetcode.com/problems/clone-graph/
 
-int dp[105][105][2];
-ll AdjBc(int n, int k, int f) {
-    if(n == 0)
-        return 0;
-    if(n == 1) {
-        if(k == 0)
-            return 1;
-        else 
-            return 0;
+class node {
+    public:
+    int val;
+    vector<node*> neighbour;
+    node(int val_) {
+        val = val_;
+        neighbour = vector<node*>();
     }
+};
 
-    if(dp[n][k][f] != -1)
-        return dp[n][k][f];
-    ll result = -1;
-    if(f == 0)
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k,1);
-    else 
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k-1,1); 
-
-    return dp[n][k][f] = result; 
+void dfs(node *original, node *copy, vector<node*> &vis) {
+    vis[copy->val] = copy;
+    for(auto i:original->neighbour) {
+        if(vis[i->val] == NULL) {
+            node *newnode = new node(i->val);
+            copy->neighbour.push_back(newnode);
+        }
+        else {
+            copy->neighbour.push_back(vis[i->val]);
+        }
+    }
+}
+node* cloneGraph(node *node_) {
+    if(node_ == NULL)
+        return NULL;
+    vector<node*> vis(1001,NULL);
+    node *copy = new node(node_->val);
+    dfs(node_,copy,vis);
+    return copy;
 }
 
 int main(int argc, char const *argv[])
@@ -65,17 +74,6 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    ll t;
-    cin>>t;
-    while(t--) {
-        ll num, n, k;
-        cin>>num>>n>>k;
-        memset(dp,-1,sizeof(dp));
-        ll ans  = 0;
-        ans += AdjBc(n,k,0);
-        ans += AdjBc(n,k,1);
-        cout<<num<<" "<<ans<<endl;
-    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

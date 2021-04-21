@@ -35,28 +35,30 @@ void file_i_o()
     #endif
 }
 
-// https://www.spoj.com/problems/GNYR09F/
+// https://practice.geeksforgeeks.org/problems/steps-by-knight/0
 
-int dp[105][105][2];
-ll AdjBc(int n, int k, int f) {
-    if(n == 0)
+bool issafe(int i, int j, int n, vector<vector<int> > &arr) {
+    return (i<n and j<n and i>=0 and j>=0 and arr[i][j]==0);
+}
+int minSteps(pair<int,int> pos, pair<int,int> target, int n) {
+    if(pos.ff==target.ff and pos.ss==target.ss)
         return 0;
-    if(n == 1) {
-        if(k == 0)
-            return 1;
-        else 
-            return 0;
+    vector<vector<int> > arr(n,vector<int> (n,0));
+    queue<pair<int,int> > Q;
+    Q.push(pos);
+    arr[pos.ff-1][pos.ss-1];
+    while(!Q.empty()) {
+        pair<int,int> p = Q.front(); Q.pop();
+        int xdir[] = {-2,-2,-1,-1,2,2,1,1};
+        int ydir[] = {1,-1,2,-2,1,-1,2,-2};
+        loop(i,0,7) {
+            if(issafe(p.ff+xdir[i],p.ss+ydir[i],n,arr)) {
+                arr[p.ff+xdir[i]][p.ss+ydir[i]] = 1 + arr[p.ff][p.ss];
+                Q.push(make_pair(p.ff+xdir[i],p.ss+ydir[i]));
+            }
+        }
     }
-
-    if(dp[n][k][f] != -1)
-        return dp[n][k][f];
-    ll result = -1;
-    if(f == 0)
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k,1);
-    else 
-        result = AdjBc(n-1,k,0) + AdjBc(n-1,k-1,1); 
-
-    return dp[n][k][f] = result; 
+    return arr[target.ff-1][target.ss-1];
 }
 
 int main(int argc, char const *argv[])
@@ -65,17 +67,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    ll t;
-    cin>>t;
-    while(t--) {
-        ll num, n, k;
-        cin>>num>>n>>k;
-        memset(dp,-1,sizeof(dp));
-        ll ans  = 0;
-        ans += AdjBc(n,k,0);
-        ans += AdjBc(n,k,1);
-        cout<<num<<" "<<ans<<endl;
-    }
+    int n, i, j, x, y;
+    cin>>n>>i>>j>>x>>y;
+
+    cout<<minSteps(make_pair(i,j),make_pair(x,y),n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
