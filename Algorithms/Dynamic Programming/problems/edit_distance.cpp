@@ -35,9 +35,29 @@ void file_i_o()
     #endif
 }
 
-// https://practice.geeksforgeeks.org/problems/row-with-max-1s0023/1
+// https://practice.geeksforgeeks.org/problems/edit-distance3702/1
 
+int dp[1001][1001];
+int func(string &s1, string &s2, int n1, int n2) {
+    if(n1 == -1) return n2+1;
+    if(n2 == -1) return n1+1;
 
+    if(dp[n1][n2] != -1) return dp[n1][n2];
+    if(s1[n1] == s1[n2]) 
+        return dp[n1][n2] = func(s1,s2,n1-1,n2-1);
+
+    int a = func(s1,s2,n1-1,n2-1); // replace
+    int b = func(s1,s2,n1,n2-1); // insert
+    int c = func(s1,s2,n1-1,n2); // remove
+
+    return dp[n1][n2] = 1+min(a,min(b,c));
+}
+int editDistance(string s1, string s2) {
+    int n1 = s1.length();
+    int n2 = s2.length();
+    memset(dp,-1,sizeof(dp));
+    return func(s1,s2,n1-1,n2-1);
+}
 
 int main(int argc, char const *argv[])
 {
@@ -45,6 +65,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
+    string s1, s2;
+    cin>>s1>>s2;
+
+    cout<<editDistance(s1,s2);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
