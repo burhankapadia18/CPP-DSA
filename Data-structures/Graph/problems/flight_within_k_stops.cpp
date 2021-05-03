@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include<iostream>
 //#include<ext/pb_ds/assoc_container.hpp>
 //using namespace __gnu_pbds;
 using namespace std;
@@ -35,34 +35,9 @@ void file_i_o()
     #endif
 }
 
-int binarySearch(int *arr, int n, int target)
-{   // iterative
-    int lo=0, hi = n-1;
-    while(lo <= hi)
-    {
-        int mi = mid(lo,hi);
-        if(arr[mi] == target)
-            return mi;
-        else if(arr[mi] > target)
-            hi = mi - 1;
-        else 
-            lo = mi + 1;
-    }
-    return -1;
-}
-int binarySearch(int *arr, int lo, int hi, int target) 
-{   // recursive
-    if(lo <= hi) {
-        int mi = mid(lo,hi);
-        if(arr[mi] == target) 
-            return mi;
-        else if(arr[mi] > target)
-            return binarySearch(arr,lo,mi-1,target);
-        else 
-            return binarySearch(arr,mi+1,hi,target);
-    }
-    return -1;
-}
+// https://leetcode.com/problems/cheapest-flights-within-k-stops/description/
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -70,14 +45,8 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-    int arr[n];
-    loop(i,0,n-1)
-        cin>>arr[i];
-    int target;
-    cin>>target;
-    cout<<binarySearch(arr,n,target)<<" "<<binarySearch(arr,0,n-1,target );
+    
+    
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

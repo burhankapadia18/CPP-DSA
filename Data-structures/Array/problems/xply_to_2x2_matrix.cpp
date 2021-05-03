@@ -23,6 +23,8 @@ using namespace std;
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
 
+#define vvi             vector<vector<ll> >
+
 
 void file_i_o()
 {
@@ -35,33 +37,16 @@ void file_i_o()
     #endif
 }
 
-int binarySearch(int *arr, int n, int target)
-{   // iterative
-    int lo=0, hi = n-1;
-    while(lo <= hi)
-    {
-        int mi = mid(lo,hi);
-        if(arr[mi] == target)
-            return mi;
-        else if(arr[mi] > target)
-            hi = mi - 1;
-        else 
-            lo = mi + 1;
+void multiply(vvi &mtx1, vvi &mtx2, vvi &res)
+{
+    int i, j, k;
+    loop(i,0,1) {
+        loop(j,0,1) {
+            res[i][j] = 0;
+            loop(k,0,1)
+                res[i][j] += mtx1[i][k] * mtx2[k][j];
+        }
     }
-    return -1;
-}
-int binarySearch(int *arr, int lo, int hi, int target) 
-{   // recursive
-    if(lo <= hi) {
-        int mi = mid(lo,hi);
-        if(arr[mi] == target) 
-            return mi;
-        else if(arr[mi] > target)
-            return binarySearch(arr,lo,mi-1,target);
-        else 
-            return binarySearch(arr,mi+1,hi,target);
-    }
-    return -1;
 }
 
 int main(int argc, char const *argv[])
@@ -70,14 +55,20 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-    int arr[n];
-    loop(i,0,n-1)
-        cin>>arr[i];
-    int target;
-    cin>>target;
-    cout<<binarySearch(arr,n,target)<<" "<<binarySearch(arr,0,n-1,target );
+    vvi mtx1(2,vi(2)), mtx2(2,vi(2)), res(2,vi(2));
+    loop(i,0,1)
+        loop(j,0,1)
+            cin>>mtx1[i][j];
+    loop(i,0,1)
+        loop(j,0,1)
+            cin>>mtx2[i][j];
+
+    multiply(mtx1,mtx2,res);
+    loop(i,0,1) {
+        loop(j,0,1)
+            cout<<res[i][j]<<'\t';
+        cout<<endl;
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
