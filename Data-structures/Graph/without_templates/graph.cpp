@@ -39,7 +39,7 @@ void printGraph(vpii adj[], int n)
 	} 
 } 
 
-void dfs_util(vpii adj[], bool vis[], int u){
+void dfs_util(vpii adj[], bool vis[], int u) {
     vis[u] = 1;
     cout<<u<<" ";
     for(auto i:adj[u])
@@ -49,14 +49,14 @@ void dfs_util(vpii adj[], bool vis[], int u){
             dfs_util(adj,vis,v);
     }
 }
-void dfs(vpii adj[], int n)
-{
+void dfs(vpii adj[], int n) {
     bool vis[n+1];
-    dfs_util(adj,vis,1);
+    for(int i=1; i<=n; i++)
+        if(!vis[i])
+            dfs_util(adj,vis,i);
 }
 
-void bfs(vpii adj[], int n)
-{
+void bfs(vpii adj[], int n) {
     queue<int> Q;
     bool vis[n+1];
     Q.push(1);

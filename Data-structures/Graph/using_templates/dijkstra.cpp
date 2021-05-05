@@ -36,32 +36,22 @@ public:
         cout<<i<<"->";
     }
     void dijsktra(T src) {
-
         set<pair<int,T> > S;
-
         map<T,int> distance;
         map<T,T> parent;
         for(auto i:adj)
             distance[i.first] = INT_MAX;
-
         distance[src] = 0;
         parent[src] = src;
         S.insert(make_pair(0,src));
-
         while(!S.empty()) {
-
             auto it = S.begin();
             T i = it->second;
-
             S.erase(it);
-
             for(auto e:adj[i]) {
-
                 T nb = e.first;
                 int w = e.second;
-
                 if(distance[i]+w < distance[nb]) {
-
                     parent[nb] = i;
                     S.erase(make_pair(distance[nb],nb));
                     distance[nb] = distance[i] + w;
@@ -69,17 +59,14 @@ public:
                 }
             }
         }
-
         for(auto i:distance)
             cout<<i.first<<" : "<<i.second<<endl;
-
         for(auto i:adj) {
             cout<<i.first<<" : ";
             getPath(i.first,parent,distance);
             cout<<endl;
         }
     }
-
 };
 
 int main(){

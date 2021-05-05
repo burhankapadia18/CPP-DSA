@@ -87,6 +87,7 @@ void kruskals(Edge *input, ll n, ll e)
     ll tw = 0;
     loop(j,0,EdgeCount-1)
         tw += output[j].wt;
+    cout<<tw;
 }
 
 int main(int argc, char const *argv[])

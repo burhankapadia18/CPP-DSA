@@ -35,39 +35,30 @@ void file_i_o()
     #endif
 }
 
-void Prims(vector<pair<int,int> > adj[], int n) {
-    vector<int> parent(n);
-    vector<int> key(n);
-    set<pair<int,int> > s;
-    vector<bool> inSet(n);
-    key[0] = 0;
-    parent[0] = -1;
-    inSet[0] = 1;
-    s.insert(make_pair(key[0],0));
-    loop(i,1,n-1) {
-        parent[i] = -1;
-        key[i] = INT_MAX;
-        s.insert(make_pair(key[i],i));
-        inSet[i] = 1;
-    }
-    while(!s.empty()) {
-        auto i = s.begin();
-        int u = i->second;
-        s.erase(i);
-        inSet[u] = 0;
-        for(auto j:adj[u]) {
-            int v = j.ff;
-            int w = j.ss;
-            if(inSet[v] and w<key[v]) {
-                s.erase(make_pair(key[v],v));
-                key[v] = w;
+void dijkstra(vector<pair<int,int> > adj[], int V, int src) {
+    set<pair<int,int> > S;
+    vector<int> dist(V,INT_MAX), parent(V);
+    dist[src] = 0;
+    parent[src] = -1;
+    S.insert(make_pair(dist[0],src));
+    while(!S.empty()) {
+        auto it = S.begin();
+        int u = it->second;
+        S.erase(it);
+        for(auto i:adj[u]) {
+            int v = i.ff;
+            int w = i.ss;
+            if(dist[u]+w < dist[v]) {
                 parent[v] = u;
-                s.insert(make_pair(key[v],v));
+                S.erase(make_pair(dist[v],v));
+                dist[v] = dist[u]+w;
+                S.insert(make_pair(dist[v],v));
             }
         }
     }
-    loop(i,1,n-1)
-        cout<<parent[i]<<"\t-\t"<<i<<endl;
+    loop(i,0,V-1) {
+        cout<<src<<"->"<<i<<":"<<dist[i]<<endl;
+    }
 }
 
 int main(int argc, char const *argv[])
@@ -86,7 +77,7 @@ int main(int argc, char const *argv[])
        adj[y].push_back(make_pair(x,w));
     }
 
-    Prims(adj,v);
+    dijkstra(adj,v,0);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

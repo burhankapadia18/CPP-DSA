@@ -35,39 +35,22 @@ void file_i_o()
     #endif
 }
 
-void Prims(vector<pair<int,int> > adj[], int n) {
-    vector<int> parent(n);
-    vector<int> key(n);
-    set<pair<int,int> > s;
-    vector<bool> inSet(n);
-    key[0] = 0;
-    parent[0] = -1;
-    inSet[0] = 1;
-    s.insert(make_pair(key[0],0));
-    loop(i,1,n-1) {
-        parent[i] = -1;
-        key[i] = INT_MAX;
-        s.insert(make_pair(key[i],i));
-        inSet[i] = 1;
-    }
-    while(!s.empty()) {
-        auto i = s.begin();
-        int u = i->second;
-        s.erase(i);
-        inSet[u] = 0;
-        for(auto j:adj[u]) {
-            int v = j.ff;
-            int w = j.ss;
-            if(inSet[v] and w<key[v]) {
-                s.erase(make_pair(key[v],v));
-                key[v] = w;
-                parent[v] = u;
-                s.insert(make_pair(key[v],v));
-            }
-        }
-    }
-    loop(i,1,n-1)
-        cout<<parent[i]<<"\t-\t"<<i<<endl;
+int minComputation(int files[], int n) {
+	priority_queue<int, vector<int>, greater<int>> pq;
+	loop(i,0,n-1) {	
+		pq.push(files[i]);
+	}
+	int count = 0;
+	while(pq.size()>1){
+		int first_smallest = pq.top();
+		pq.pop();
+		int second_smallest = pq.top();
+		pq.pop();
+		int temp = first_smallest + second_smallest;
+		count += temp;
+		pq.push(temp);
+	}
+	return count;
 }
 
 int main(int argc, char const *argv[])
@@ -76,21 +59,58 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int v, e;
-    cin>>v>>e;
-    vector<pair<int,int> > adj[v];
-    while(e--) {
-        int x, y, w;
-        cin>>x>>y>>w;
-       adj[x].push_back(make_pair(y,w));
-       adj[y].push_back(make_pair(x,w));
-    }
+    int n;
+    cin>>n;
+	int files[n];
+    loop(i,0,n-1)
+        cin>>files[i];
 
-    Prims(adj,v);
+	cout<<"Minimum Computations = "<<minComputation(files,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
         cout<<"\n\nExecuted in: "<<double(end-begin) / CLOCKS_PER_SEC*1000<<" ms";
     #endif
     return 0;
+}
+
+// Function to find minimum computation
+int minComputation(int size, int files[])
+{
+	
+	// Create a min heap
+	priority_queue<int, vector<int>,
+		greater<int>> pq;
+
+	for(int i = 0; i < size; i++)
+	{
+		
+		// Add sizes to priorityQueue
+		pq.push(files[i]);
+	}
+	
+	// Variable to count total Computation
+	int count = 0;
+
+	while(pq.size() > 1)
+	{
+		
+		// pop two smallest size element
+		// from the min heap
+		int first_smallest = pq.top();
+		pq.pop();
+		int second_smallest = pq.top();
+		pq.pop();
+		
+		int temp = first_smallest + second_smallest;
+
+		// Add the current computations
+		// with the previous one's
+		count += temp;
+
+		// Add new combined file size
+		// to priority queue or min heap
+		pq.push(temp);
+	}
+	return count;
 }
