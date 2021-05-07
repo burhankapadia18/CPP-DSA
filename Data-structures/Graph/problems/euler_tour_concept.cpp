@@ -35,35 +35,27 @@ void file_i_o()
     #endif
 }
 
-// https://leetcode.com/problems/cheapest-flights-within-k-stops/description/
+// https://www.hackerearth.com/practice/algorithms/graphs/topological-sort/practice-problems/algorithm/oliver-and-the-game-3/
 
-int flight_cost(vector<pair<int,int> > adj[], int V, int src, int dest, int k) {
-    set<vector<int> > S;
-    vector<int> tmp(3);
-    tmp[0] = 0; // cost
-    tmp[1] = src; // city
-    tmp[2] = 0; // no. of stops
-    S.insert(tmp);
-    while(!S.empty()) {
-        tmp = *S.begin();
-        S.erase(tmp);
-        int cost = tmp[0];
-        int u = tmp[1];
-        int stops = tmp[2];
-        if(u == dest)
-            return cost;
-        for(auto i:adj[u]) {
-            int v = i.ff;
-            int w = i.ss;
-            if(stops <= k) {
-                tmp[0] = cost + w;
-                tmp[1] = v;
-                tmp[2] = stops + 1;
-                S.insert(tmp);
-            }
-        }
+vector<int> intime;
+vector<int> outtime;
+int timer;
+void resize(int n) {
+    intime.resize(n+1);
+    outtime.resize(n+1);
+}
+void dfs(int src, int parent, vector<int> adj[]) {
+    intime[src] = timer++;
+    for(int v:adj[src]) {
+        if(v != parent)
+            dfs(v,src,adj);
     }
-    return -1;
+    outtime[src] = timer++;
+}
+bool check(int a, int b) {
+    if(intime[a]>intime[b] and outtime[a]<outtime[b])
+        return 1;
+    return 0;
 }
 
 int main(int argc, char const *argv[])
@@ -72,17 +64,41 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int V, E;
-    cin>>V>>E;
-    vector<pair<int,int> > adj[V];
-    loop(i,1,E) {
-        int x, y, w;
-        cin>>x>>y>>w;
-        adj[x].push_back(make_pair(y,w));
+    int n;
+    cin>>n;
+    timer = 1;
+    resize(n);
+    vector<int> adj[n+1];
+    loop(i,1,n-1) {
+        int x, y;
+        cin>>x>>y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+    dfs(1,0,adj);
+    int q;
+    cin>>q;
+    while(q--) {
+        int type, x, y;
+        cin>>type>>x>>y;
+        if(!check(x,y) and !check(y,x)) {
+            cout<<"No\n";
+            continue;
+        }
+        if(type == 0) {
+            if(check(y,x))
+                cout<<"Yes\n";
+            else 
+                cout<<"No\n";
+        }
+        else if(type == 1) {
+            if(check(x,y))
+                cout<<"Yes\n";
+            else 
+                cout<<"No\n";
+        }
     }
 
-    cout<<flight_cost(adj,V,0,5,2);
-    
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
