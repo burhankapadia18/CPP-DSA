@@ -36,7 +36,7 @@ void file_i_o()
 }
 
 int minComputation(int files[], int n) {
-	priority_queue<int, vector<int>, greater<int>> pq;
+	priority_queue<int, vector<int>, greater<int> > pq;
 	loop(i,0,n-1) {	
 		pq.push(files[i]);
 	}
@@ -72,45 +72,4 @@ int main(int argc, char const *argv[])
         cout<<"\n\nExecuted in: "<<double(end-begin) / CLOCKS_PER_SEC*1000<<" ms";
     #endif
     return 0;
-}
-
-// Function to find minimum computation
-int minComputation(int size, int files[])
-{
-	
-	// Create a min heap
-	priority_queue<int, vector<int>,
-		greater<int>> pq;
-
-	for(int i = 0; i < size; i++)
-	{
-		
-		// Add sizes to priorityQueue
-		pq.push(files[i]);
-	}
-	
-	// Variable to count total Computation
-	int count = 0;
-
-	while(pq.size() > 1)
-	{
-		
-		// pop two smallest size element
-		// from the min heap
-		int first_smallest = pq.top();
-		pq.pop();
-		int second_smallest = pq.top();
-		pq.pop();
-		
-		int temp = first_smallest + second_smallest;
-
-		// Add the current computations
-		// with the previous one's
-		count += temp;
-
-		// Add new combined file size
-		// to priority queue or min heap
-		pq.push(temp);
-	}
-	return count;
 }

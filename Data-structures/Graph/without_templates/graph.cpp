@@ -12,8 +12,8 @@ void file_i_o()
     cin.tie(0);
     cout.tie(0);
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/Desktop/C++14/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/Desktop/C++14/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 }
 
@@ -176,8 +176,8 @@ int main(int argc, char const *argv[])
         cin>>u>>v;
         addEdge(adj,u,v,1,1);
     }
-	printGraph(adj,n); 
-    cout<<iscyclic_dfs_1(adj,n);
+	// printGraph(adj,n); 
+    bfs(adj,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

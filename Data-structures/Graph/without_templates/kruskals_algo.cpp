@@ -30,8 +30,8 @@ void file_i_o()
     cin.tie(0);
     cout.tie(0);
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/Desktop/C++14/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/Desktop/C++14/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 }
 
@@ -96,6 +96,18 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
+    ll n, e;
+    cin>>n>>e;
+    Edge edgelist[e];
+    loop(i,0,e-1) {
+        int u, v, w;
+        cin>>u>>v>>w;
+        edgelist[i].src = u;
+        edgelist[i].dest = v;
+        edgelist[i].wt = w;
+    }
+
+    kruskals(edgelist,n,e);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
