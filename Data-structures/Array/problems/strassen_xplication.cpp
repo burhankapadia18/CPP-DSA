@@ -105,11 +105,11 @@ vvi strassen(vvi &M1, vvi &M2) {
     }
 
     vvi a = split(M1,0,(n/2)-1,0,(n/2)-1);
-    vvi b = split(M1,0,n/2,(n/2),n-1);
+    vvi b = split(M1,0,(n/2)-1,n/2,n-1);
     vvi c = split(M1,n/2,n-1,0,(n/2)-1);
     vvi d = split(M1,n/2,n-1,n/2,n-1);
     vvi e = split(M2,0,(n/2)-1,0,(n/2)-1);
-    vvi f = split(M2,0,n/2,(n/2),n-1);
+    vvi f = split(M2,0,(n/2)-1,(n/2),n-1);
     vvi g = split(M2,n/2,n-1,0,(n/2)-1);
     vvi h = split(M2,n/2,n-1,n/2,n-1);
 
