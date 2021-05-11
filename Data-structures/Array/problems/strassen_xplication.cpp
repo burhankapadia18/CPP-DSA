@@ -10,7 +10,7 @@ using namespace std;
 #define ESPILON         1e-9
 #define endl			"\n"
 #define pb 				emplace_back
-#define vi              vector<ll>
+// #define vi              vector<ll>
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
@@ -51,13 +51,38 @@ void file_i_o()
 #define vvi             vector<vector<int> >
 #define vi              vector<int>
 vvi add(vvi &a, vvi &b) {
-
+    int n = a.size();
+    vvi ans(n,vi(n));
+    loop(i,0,n-1) {
+        loop(j,0,n-1) {
+            ans[i][j] = a[i][j] + b[i][j];
+        }
+    }
+    return ans;
 }
 vvi sub(vvi &a, vvi &b) {
-
+    int n = a.size();
+    vvi ans(n,vi(n));
+    loop(i,0,n-1) {
+        loop(j,0,n-1) {
+            ans[i][j] = a[i][j] - b[i][j];
+        }
+    }
+    return ans;
 }
 vvi split(vvi &a, int str, int enr, int stc, int enc) {
-
+    int n = a.size();
+    vvi ans(n/2,vi(n/2));
+    int i=0, j=0;
+    loop(r,str,enr) {
+        j = 0;
+        loop(c,stc,enc) {
+            ans[i][j] = a[r][c];
+            j++;
+        }
+        i++;
+    }
+    return ans;
 }
 vvi strassen(vvi &M1, vvi &M2) {
 
@@ -69,12 +94,14 @@ vvi strassen(vvi &M1, vvi &M2) {
     int n = M1.size();
 
     if(n%2 != 0) {
+        // if matrix size is odd
         M1.resize(n+1,vi (n,0));
-        M2.resize(n+1,vi (n,0))
+        M2.resize(n+1,vi (n,0));
         loop(i,0,n) {
             M1[i].resize(n+1,0);
             M2[i].resize(n+1,0);
         }
+        n++;
     }
 
     vvi a = split(M1,0,(n/2)-1,0,(n/2)-1);
@@ -129,20 +156,26 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    vvi a(3,vi(3));
-    loop(i,0,2)
-        loop(j,0,2)
+    int n;
+    cin>>n;
+    vvi a(n,vi(n)), b(n,vi(n));
+    loop(i,0,n-1)
+        loop(j,0,n-1)
             cin>>a[i][j];
+    loop(i,0,n-1)
+        loop(j,0,n-1)
+            cin>>b[i][j];
 
-    // loop(i,0,2){
-    //     loop(j,0,2)
-    //         cout<<a[i][j]<<"\t";
-    //     cout<<endl; 
-    // }
-    // a.resize(4,vi(3,0));
-    // loop(i,0,4) {
-    //     a[i].resize(4,0);
-    // }
+    vvi c = strassen(a,b);
+
+    for(auto i:c) {
+        for(int j:i) {
+            cout<<j<<'\t';
+        }
+        cout<<endl;
+    }
+
+    
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
