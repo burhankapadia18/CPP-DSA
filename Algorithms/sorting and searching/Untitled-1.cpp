@@ -1,12 +1,18 @@
 #include<iostream>
 #include<vector>
+#include<utility>
+#include<algorithm>
 using namespace std;
 
-int main(int argc, char const *argv[])
-{ 
-    vector<int> arr = {1,2,3,4,5};
-    for(int i=0; i<5; i++) {
-        cout<<arr[i];
-    }
+bool cmp(int a, int b) {
+    return a>b;
+}
+
+int main() {
+
+    int arr[5] = {1,2,5,8,7};
+
+    sort(arr,arr+5,cmp);
+    
     return 0;
 }
