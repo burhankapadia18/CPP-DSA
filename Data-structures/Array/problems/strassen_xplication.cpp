@@ -37,7 +37,7 @@ void file_i_o()
 
 /*
     a  b     e  f         p5+p4-p2+p6   p1+p2
-         X         =
+          X           =
     c  d     g  h         p3+p4         p1+p5-p3-p7
 
     p1 = a(f-h)
@@ -93,6 +93,7 @@ vvi strassen(vvi &M1, vvi &M2) {
     }
     int n = M1.size();
 
+    bool isOdd = 0;
     if(n%2 != 0) {
         // if matrix size is odd
         M1.resize(n+1,vi (n,0));
@@ -102,6 +103,7 @@ vvi strassen(vvi &M1, vvi &M2) {
             M2[i].resize(n+1,0);
         }
         n++;
+        isOdd = 1;
     }
 
     vvi a = split(M1,0,(n/2)-1,0,(n/2)-1);
@@ -115,27 +117,36 @@ vvi strassen(vvi &M1, vvi &M2) {
 
     vvi temp, temp_;
 
-    temp = sub(f,h);
-    vvi p1 = strassen(a,temp);
-    temp = add(a,b);
-    vvi p2 = strassen(temp,h);
-    temp = add(c,d);
-    vvi p3 = strassen(temp,e);
-    temp = sub(g,e);
-    vvi p4 = strassen(d,temp);
-    temp = add(a,d); temp_ = add(e,h);
-    vvi p5 = strassen(temp,temp_);
-    temp = sub(b,d); temp_ = add(g,h);
-    vvi p6 = strassen(temp,temp_);
-    temp = sub(a,c); temp_ = add(e,f);
-    vvi p7 = strassen(temp,temp_);
+    // temp = sub(f,h);
+    // vvi p1 = strassen(a,temp);
+    // temp = add(a,b);
+    // vvi p2 = strassen(temp,h);
+    // temp = add(c,d);
+    // vvi p3 = strassen(temp,e);
+    // temp = sub(g,e);
+    // vvi p4 = strassen(d,temp);
+    // temp = add(a,d); temp_ = add(e,h);
+    // vvi p5 = strassen(temp,temp_);
+    // temp = sub(b,d); temp_ = add(g,h);
+    // vvi p6 = strassen(temp,temp_);
+    // temp = sub(a,c); temp_ = add(e,f);
+    // vvi p7 = strassen(temp,temp_);
 
-    temp = add(p5,p4); temp_ = add(p2,p6);
-    vvi Q1 = sub(temp,temp_);
-    vvi Q2 = add(p1,p2);
-    vvi Q3 = add(p3,p4);
-    temp = add(p1,p5); temp_ = sub(p3,p7);
-    vvi Q4 = sub(temp,temp_);
+    // temp = add(p5,p4); temp_ = add(p2,p6);
+    // vvi Q1 = sub(temp,temp_);
+    // vvi Q2 = add(p1,p2);
+    // vvi Q3 = add(p3,p4);
+    // temp = add(p1,p5); temp_ = sub(p3,p7);
+    // vvi Q4 = sub(temp,temp_);
+
+    temp = strassen(a,e); temp_ = strassen(b,g);
+    vvi Q1 = add(temp,temp_);
+    temp = strassen(a,f); temp_ = strassen(b,h);
+    vvi Q2 = add(temp,temp_);
+    temp = strassen(c,e); temp_ = strassen(d,g);
+    vvi Q3 = add(temp,temp_);
+    temp = strassen(c,f); temp_ = strassen(d,h);
+    vvi Q4 = add(temp,temp_);
 
     vvi ans(n,vi(n));
     for(int i=0; i<n/2; i++) {
@@ -147,6 +158,11 @@ vvi strassen(vvi &M1, vvi &M2) {
         }
     }
 
+    if(isOdd) {
+        ans.resize(n-1);
+        loop(i,0,n-2) 
+            ans[i].resize(n-1);
+    }
     return ans;
 }
 
@@ -170,7 +186,7 @@ int main(int argc, char const *argv[])
 
     for(auto i:c) {
         for(int j:i) {
-            cout<<j<<'\t';
+            cout<<j<<"\t\t";
         }
         cout<<endl;
     }
