@@ -35,34 +35,22 @@ void file_i_o()
     #endif
 }
 
-void Prims(int src, vector<pair<int,int> > adj[], int n) {
-    vector<int> parent(n), dist(n,INT_MAX);
-    vector<bool> vis(n,0);
-    set<pair<int,int> > S;
-    dist[src] = 0;
-    parent[src] = 0;
-    S.insert(make_pair(0,src)); // (wt,vertex)
-    int cost = 0;
-    while(!S.empty()) {
-        auto i = *(S.begin());
-        S.erase(i);
-        int u = i.ss;
-        vis[u] = 1;
-        int w = i.ff;
-        cout<<u<<" "<<parent[u]<<" "<<w<<endl;
-        cost += w;
-        for(auto j:adj[u]) {
-            int v = j.ff;
-            int wt = j.ss;
-            if(vis[v]) continue;
-            if(dist[v] > wt) {
-                S.erase(make_pair(dist[v],v));
-                dist[v] = wt;
-                S.insert(make_pair(dist[v],v));
-                parent[v] = u;
+// https://www.geeksforgeeks.org/number-of-triangles-in-directed-and-undirected-graphs/
+
+int count_triangle(vector<vector<int> > adjmtx, bool isdir) {
+    int V = adjmtx.size();
+    int ctr = 0;    
+    loop(i,0,V-1) {
+        loop(j,0,V-1) {
+            loop(k,0,V-1) {
+                if(adjmtx[i][j] and adjmtx[j][k] and adjmtx[k][i]) {
+                    ctr += 1;
+                }
             }
         }
     }
+    if(isdir) return ctr/3;
+    else return ctr/6;
 }
 
 int main(int argc, char const *argv[])
@@ -71,17 +59,17 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int v, e;
-    cin>>v>>e;
-    vector<pair<int,int> > adj[v];
-    while(e--) {
-        int x, y, w;
-        cin>>x>>y>>w;
-       adj[x].push_back(make_pair(y,w));
-       adj[y].push_back(make_pair(x,w));
+    int n, m; bool isdir;
+    cin>>n>>m>>isdir;
+    vector<vector<int> > adjmtx(n,vector<int>(n,0));
+    loop(i,1,m) {
+        int x, y;
+        cin>>x>>y;
+        adjmtx[x][y] = 1;
+        if(isdir) adjmtx[y][x] = 1;
     }
 
-    Prims(0,adj,v);
+    cout<<count_triangle(adjmtx,isdir);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

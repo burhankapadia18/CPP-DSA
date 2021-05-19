@@ -35,34 +35,21 @@ void file_i_o()
     #endif
 }
 
-void Prims(int src, vector<pair<int,int> > adj[], int n) {
-    vector<int> parent(n), dist(n,INT_MAX);
-    vector<bool> vis(n,0);
-    set<pair<int,int> > S;
-    dist[src] = 0;
-    parent[src] = 0;
-    S.insert(make_pair(0,src)); // (wt,vertex)
-    int cost = 0;
-    while(!S.empty()) {
-        auto i = *(S.begin());
-        S.erase(i);
-        int u = i.ss;
-        vis[u] = 1;
-        int w = i.ff;
-        cout<<u<<" "<<parent[u]<<" "<<w<<endl;
-        cost += w;
-        for(auto j:adj[u]) {
-            int v = j.ff;
-            int wt = j.ss;
-            if(vis[v]) continue;
-            if(dist[v] > wt) {
-                S.erase(make_pair(dist[v],v));
-                dist[v] = wt;
-                S.insert(make_pair(dist[v],v));
-                parent[v] = u;
-            }
-        }
+// https://practice.geeksforgeeks.org/problems/painting-the-fence3727/1
+
+int countWays(int n, int k) {
+    if(n == 0) return 0;
+    if(n == 1) return k;
+
+    int same = k%mod; // k * 1 ways to choose same color
+    int diff = (k*(k-1))%mod; // k * k-1 ways to choose diff color
+
+    loop(i,3,n) {
+        int prevDiff = diff%mod;
+        diff = ((same+diff)*(k-1))%mod; // prevsame*(k-1) + prevdiff*(k-1) ways for diff
+        same = prevDiff%mod; // prevdiff*1 ways to choose same
     }
+    return (same+diff)%mod;
 }
 
 int main(int argc, char const *argv[])
@@ -71,17 +58,11 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int v, e;
-    cin>>v>>e;
-    vector<pair<int,int> > adj[v];
-    while(e--) {
-        int x, y, w;
-        cin>>x>>y>>w;
-       adj[x].push_back(make_pair(y,w));
-       adj[y].push_back(make_pair(x,w));
-    }
+    int n, k;
+    cin>>n>>k;
 
-    Prims(0,adj,v);
+    cout<<countWays(n,k);
+
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

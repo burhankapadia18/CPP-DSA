@@ -35,34 +35,18 @@ void file_i_o()
     #endif
 }
 
-void Prims(int src, vector<pair<int,int> > adj[], int n) {
-    vector<int> parent(n), dist(n,INT_MAX);
-    vector<bool> vis(n,0);
-    set<pair<int,int> > S;
-    dist[src] = 0;
-    parent[src] = 0;
-    S.insert(make_pair(0,src)); // (wt,vertex)
-    int cost = 0;
-    while(!S.empty()) {
-        auto i = *(S.begin());
-        S.erase(i);
-        int u = i.ss;
-        vis[u] = 1;
-        int w = i.ff;
-        cout<<u<<" "<<parent[u]<<" "<<w<<endl;
-        cost += w;
-        for(auto j:adj[u]) {
-            int v = j.ff;
-            int wt = j.ss;
-            if(vis[v]) continue;
-            if(dist[v] > wt) {
-                S.erase(make_pair(dist[v],v));
-                dist[v] = wt;
-                S.insert(make_pair(dist[v],v));
-                parent[v] = u;
-            }
+int longest_repeated_subsequence(string &str) {
+    int n = str.length();
+    vector<vector<int> > dp(n+1,vector<int>(n+1,0));
+    loop(i,1,n) {
+        loop(j,1,n) {
+            if(str[i-1]==str[j-1] and i!=j)
+                dp[i][j] = 1 + dp[i-1][j-1];
+            else 
+                dp[i][j] = max(dp[i][j-1],dp[i-1][j]);
         }
     }
+    return dp[n][n];
 }
 
 int main(int argc, char const *argv[])
@@ -71,17 +55,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int v, e;
-    cin>>v>>e;
-    vector<pair<int,int> > adj[v];
-    while(e--) {
-        int x, y, w;
-        cin>>x>>y>>w;
-       adj[x].push_back(make_pair(y,w));
-       adj[y].push_back(make_pair(x,w));
-    }
+    string str;
+    cin>>str;
 
-    Prims(0,adj,v);
+    cout<<longest_repeated_subsequence(str);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

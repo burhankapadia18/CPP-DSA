@@ -35,34 +35,21 @@ void file_i_o()
     #endif
 }
 
-void Prims(int src, vector<pair<int,int> > adj[], int n) {
-    vector<int> parent(n), dist(n,INT_MAX);
-    vector<bool> vis(n,0);
-    set<pair<int,int> > S;
-    dist[src] = 0;
-    parent[src] = 0;
-    S.insert(make_pair(0,src)); // (wt,vertex)
-    int cost = 0;
-    while(!S.empty()) {
-        auto i = *(S.begin());
-        S.erase(i);
-        int u = i.ss;
-        vis[u] = 1;
-        int w = i.ff;
-        cout<<u<<" "<<parent[u]<<" "<<w<<endl;
-        cost += w;
-        for(auto j:adj[u]) {
-            int v = j.ff;
-            int wt = j.ss;
-            if(vis[v]) continue;
-            if(dist[v] > wt) {
-                S.erase(make_pair(dist[v],v));
-                dist[v] = wt;
-                S.insert(make_pair(dist[v],v));
-                parent[v] = u;
+// https://www.geeksforgeeks.org/count-subsequences-product-less-k/
+
+int countSubseq(vector<int> &arr, int k) {
+    int n = arr.size();
+    int dp[k+1][n+1];
+    memset(dp,0,sizeof(dp));
+    loop(i,1,k) {
+        loop(j,1,n) {
+            dp[i][j] = dp[i][j-1];
+            if(arr[j-1] <= i) {
+                dp[i][j] += dp[i/arr[j-1]][j-1]+1;
             }
         }
     }
+    return dp[k][n];
 }
 
 int main(int argc, char const *argv[])
@@ -71,17 +58,12 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int v, e;
-    cin>>v>>e;
-    vector<pair<int,int> > adj[v];
-    while(e--) {
-        int x, y, w;
-        cin>>x>>y>>w;
-       adj[x].push_back(make_pair(y,w));
-       adj[y].push_back(make_pair(x,w));
-    }
+    int n, k;
+    cin>>n>>k;
+    vector<int> arr(n);
+    loop(i,0,n-1) cin>>arr[i];
 
-    Prims(0,adj,v);
+    cout<<countSubseq(arr,k);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -35,16 +35,11 @@ void file_i_o()
     #endif
 }
 
-/*
-you are given a 2D grid of size m*n filled with integers. find
-a rectangle/subgrid with maximum sum of elements.
-*/
-
-// O(n^4) approach
+// https://practice.geeksforgeeks.org/problems/maximum-sum-rectangle/0
 
 
-// O(n^3) approach
 ll kadane(vi &temp, int &start, int &end) {
+    // O(n^3) approach
     ll sum = 0;
     ll maxSum = INT_MIN;
     end = -1;

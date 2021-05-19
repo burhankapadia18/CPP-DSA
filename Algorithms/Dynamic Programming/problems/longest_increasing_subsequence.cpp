@@ -35,34 +35,43 @@ void file_i_o()
     #endif
 }
 
-void Prims(int src, vector<pair<int,int> > adj[], int n) {
-    vector<int> parent(n), dist(n,INT_MAX);
-    vector<bool> vis(n,0);
-    set<pair<int,int> > S;
-    dist[src] = 0;
-    parent[src] = 0;
-    S.insert(make_pair(0,src)); // (wt,vertex)
-    int cost = 0;
-    while(!S.empty()) {
-        auto i = *(S.begin());
-        S.erase(i);
-        int u = i.ss;
-        vis[u] = 1;
-        int w = i.ff;
-        cout<<u<<" "<<parent[u]<<" "<<w<<endl;
-        cost += w;
-        for(auto j:adj[u]) {
-            int v = j.ff;
-            int wt = j.ss;
-            if(vis[v]) continue;
-            if(dist[v] > wt) {
-                S.erase(make_pair(dist[v],v));
-                dist[v] = wt;
-                S.insert(make_pair(dist[v],v));
-                parent[v] = u;
-            }
+// https://practice.geeksforgeeks.org/problems/longest-increasing-subsequence/0
+
+int longestSubseq(vector<int> &arr) {
+    // bottom-up O(n^2)
+    int n = arr.size();
+    vector<int> dp(n,1);
+    loop(i,1,n-1) {
+        loop(j,0,i-1) {
+            if(arr[i] > arr[j])
+                dp[i] = max(dp[i],1+dp[j]);
         }
     }
+    int ans = INT_MIN;
+    loop(i,0,n-1) ans = max(ans,dp[i]);
+    return ans;
+}
+
+int longestSubsequence(vector<int> &arr) {
+    // O(nlogn) solution
+    int n = arr.size();
+    int dp[n+1];
+    dp[0] = INT_MIN;
+    loop(i,1,n) dp[i] = INT_MAX;
+    loop(i,0,n-1) {
+        int idx = upper_bound(dp,dp+n+1,arr[i]) - dp;
+        if(arr[i]>dp[idx-1] and arr[i]<dp[idx]) {
+            dp[idx] = arr[i];
+        }
+    }
+    int ans = 0;
+    looprev(i,n,1) {
+        if(dp[i] != INT_MAX) {
+            ans = i;
+            break;
+        }
+    }
+    return ans;
 }
 
 int main(int argc, char const *argv[])
@@ -71,17 +80,14 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int v, e;
-    cin>>v>>e;
-    vector<pair<int,int> > adj[v];
-    while(e--) {
-        int x, y, w;
-        cin>>x>>y>>w;
-       adj[x].push_back(make_pair(y,w));
-       adj[y].push_back(make_pair(x,w));
-    }
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    loop(i,0,n-1)
+        cin>>arr[i];
 
-    Prims(0,adj,v);
+    cout<<longestSubseq(arr)<<" "<<longestSubsequence(arr);
+
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
