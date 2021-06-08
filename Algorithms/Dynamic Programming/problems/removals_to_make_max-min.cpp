@@ -35,37 +35,31 @@ void file_i_o()
     #endif
 }
 
-// https://leetcode.com/problems/longest-palindromic-substring/
+// https://www.geeksforgeeks.org/minimum-removals-array-make-max-min-k/
 
-void lps(string &str)
-{
-    int n = str.length(), maxlen = 1, start = 0;
-    bool dp[n][n];
-    memset(dp,0,sizeof(dp));
-    loop(i,0,n-1)
-        dp[i][i] = 1;
-    loop(i,0,n-2)
-        if(str[i] == str[i+1])
-        {
-            dp[i][i+1] = 1;
-            maxlen = 2; start = i;
-        }
-    for (int k = 3; k <= n; ++k) 
-    {
-        for (int i = 0; i < n - k + 1; ++i) 
-        {
-            int j = i + k - 1;
-            if (dp[i + 1][j - 1] && str[i] == str[j]) 
-            {
-                dp[i][j] = true;
-                if (k > maxlen) {
-                    start = i;  maxlen = k;
-                }
-            }
-        }
+int removalsReq(int arr[], int i, int j, int &k, vector<vector<int> > &dp) {
+    if(i >= j)
+        return 0;
+    
+    if(arr[j]-arr[i] <= k)
+        return 0;
+
+    if(dp[i][j] != -1)
+        return dp[i][j];
+
+    return dp[i][j] = 1 + min(removalsReq(arr,i+1,j,k,dp),removalsReq(arr,i,j-1,k,dp));
+}
+
+int removalsReq(int arr[], int n, int k) {
+    if(n==1)
+        return 0;
+
+    int ans = n-1;
+    loop(i,0,n-1) {
+        int j = upper_bound(arr+i,arr+n,arr[i]+k)-arr-1;
+        ans = min(ans,n-(j-i+1));
     }
-    string ans = str.substr(start,maxlen);
-    cout<<ans;
+    return ans;
 }
 
 int main(int argc, char const *argv[])
@@ -74,14 +68,16 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int t;
-    cin>>t;
-    while(t--){
-        string str;
-        cin>>str;
-        lps(str);
-        cout<<endl;
-    }
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    int k;
+    cin>>k;
+
+    vector<vector<int> > dp(n+1,vector<int>(n+1,-1));
+    sort(arr,arr+n);
+    cout<<removalsReq(arr,0,n-1,k,dp)<<" "<<removalsReq(arr,n,k);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

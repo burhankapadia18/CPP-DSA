@@ -39,16 +39,15 @@ void file_i_o()
 
 int dp[1005][1005];
 int countPallindromicSubseq(string &str, int i, int j) {
-    if(i>j)
-        return 0;
-    if(i==j)
-        return dp[i][j] = 1;
-    if(dp[i][j] != -1)
-        return dp[i][j];
-    if(str[i]==str[j])
-        return dp[i][j] = countPallindromicSubseq(str,i+1,j)+countPallindromicSubseq(str,i,j-1)+1;
-    else 
-        return dp[i][j] = countPallindromicSubseq(str,i+1,j)+countPallindromicSubseq(str,i,j-1)-countPallindromicSubseq(str,i+1,j-1);
+    if(i>j) return 0;
+
+    if(i==j) return dp[i][j] = 1;
+
+    if(dp[i][j] != -1) return dp[i][j];
+
+    if(str[i]==str[j]) return dp[i][j] = countPallindromicSubseq(str,i+1,j)+countPallindromicSubseq(str,i,j-1)+1;
+
+    else return dp[i][j] = countPallindromicSubseq(str,i+1,j)+countPallindromicSubseq(str,i,j-1)-countPallindromicSubseq(str,i+1,j-1);
 }
 
 int main(int argc, char const *argv[])

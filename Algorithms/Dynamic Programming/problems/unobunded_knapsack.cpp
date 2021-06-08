@@ -35,37 +35,23 @@ void file_i_o()
     #endif
 }
 
-// https://leetcode.com/problems/longest-palindromic-substring/
+// https://practice.geeksforgeeks.org/problems/knapsack-with-duplicate-items4201/1
 
-void lps(string &str)
-{
-    int n = str.length(), maxlen = 1, start = 0;
-    bool dp[n][n];
-    memset(dp,0,sizeof(dp));
-    loop(i,0,n-1)
-        dp[i][i] = 1;
-    loop(i,0,n-2)
-        if(str[i] == str[i+1])
-        {
-            dp[i][i+1] = 1;
-            maxlen = 2; start = i;
-        }
-    for (int k = 3; k <= n; ++k) 
-    {
-        for (int i = 0; i < n - k + 1; ++i) 
-        {
-            int j = i + k - 1;
-            if (dp[i + 1][j - 1] && str[i] == str[j]) 
-            {
-                dp[i][j] = true;
-                if (k > maxlen) {
-                    start = i;  maxlen = k;
-                }
-            }
-        }
-    }
-    string ans = str.substr(start,maxlen);
-    cout<<ans;
+int dp[1005][1005];
+int knapsack(vector<pair<int,int> > &arr, int i, int w) {
+    if(i <= -1)
+        return 0;
+
+    if(dp[i][w] != -1)
+        return dp[i][w];
+
+    if(arr[i].ss > w)
+        return dp[i][w] = knapsack(arr,i-1,w);
+
+    int opt1 = arr[i].ff + knapsack(arr,i,w-arr[i].ss);
+    int opt2 = knapsack(arr,i-1,w);
+
+    return dp[i][w] = max(opt1,opt2);
 }
 
 int main(int argc, char const *argv[])
@@ -74,14 +60,19 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int t;
-    cin>>t;
-    while(t--){
-        string str;
-        cin>>str;
-        lps(str);
-        cout<<endl;
+    int n;
+    cin>>n;
+    vector<pair<int,int> > arr(n);
+    loop(i,0,n-1) {
+        int val, wt;
+        cin>>val>>wt;
+        arr[i] = make_pair(val,wt);
     }
+    int W;
+    cin>>W;
+
+    memset(dp,-1,sizeof(dp));
+    cout<<knapsack(arr,n-1,W);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

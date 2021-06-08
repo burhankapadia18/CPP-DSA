@@ -35,37 +35,19 @@ void file_i_o()
     #endif
 }
 
-// https://leetcode.com/problems/longest-palindromic-substring/
+// https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
 
-void lps(string &str)
-{
-    int n = str.length(), maxlen = 1, start = 0;
-    bool dp[n][n];
-    memset(dp,0,sizeof(dp));
-    loop(i,0,n-1)
-        dp[i][i] = 1;
-    loop(i,0,n-2)
-        if(str[i] == str[i+1])
-        {
-            dp[i][i+1] = 1;
-            maxlen = 2; start = i;
-        }
-    for (int k = 3; k <= n; ++k) 
-    {
-        for (int i = 0; i < n - k + 1; ++i) 
-        {
-            int j = i + k - 1;
-            if (dp[i + 1][j - 1] && str[i] == str[j]) 
-            {
-                dp[i][j] = true;
-                if (k > maxlen) {
-                    start = i;  maxlen = k;
-                }
-            }
-        }
-    }
-    string ans = str.substr(start,maxlen);
-    cout<<ans;
+int dp[1005][1005];
+int longestPallindromicSubseq(string &s, int i, int j) {
+    if(i == j) return 1;
+    
+    if(i > j) return 0;
+    
+    if(dp[i][j] != -1) return dp[i][j];
+
+    if(s[i] == s[j]) return dp[i][j] = longestPallindromicSubseq(s,i+1,j-1)+2;
+
+    return dp[i][j] = max(longestPallindromicSubseq(s,i+1,j),longestPallindromicSubseq(s,i,j-1));
 }
 
 int main(int argc, char const *argv[])
@@ -74,14 +56,13 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int t;
-    cin>>t;
-    while(t--){
-        string str;
-        cin>>str;
-        lps(str);
-        cout<<endl;
-    }
+    string s;
+    cin>>s;
+
+    int n = s.length();
+    memset(dp,-1,sizeof(dp));
+    cout<<longestPallindromicSubseq(s,0,n-1);
+
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

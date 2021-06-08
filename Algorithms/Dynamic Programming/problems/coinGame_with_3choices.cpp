@@ -35,37 +35,19 @@ void file_i_o()
     #endif
 }
 
-// https://leetcode.com/problems/longest-palindromic-substring/
+// https://www.geeksforgeeks.org/coin-game-winner-every-player-three-choices/
 
-void lps(string &str)
-{
-    int n = str.length(), maxlen = 1, start = 0;
-    bool dp[n][n];
-    memset(dp,0,sizeof(dp));
-    loop(i,0,n-1)
-        dp[i][i] = 1;
-    loop(i,0,n-2)
-        if(str[i] == str[i+1])
-        {
-            dp[i][i+1] = 1;
-            maxlen = 2; start = i;
-        }
-    for (int k = 3; k <= n; ++k) 
-    {
-        for (int i = 0; i < n - k + 1; ++i) 
-        {
-            int j = i + k - 1;
-            if (dp[i + 1][j - 1] && str[i] == str[j]) 
-            {
-                dp[i][j] = true;
-                if (k > maxlen) {
-                    start = i;  maxlen = k;
-                }
-            }
-        }
-    }
-    string ans = str.substr(start,maxlen);
-    cout<<ans;
+void solve(int n, int x, int y) {
+    bool dp[n+1];
+    dp[0] = 0;
+    dp[1] = 1;
+    loop(i,2,n) {
+        if(i-1>=0 and dp[i-1]==0) dp[i] = 1;
+        else if(i-x>=0 and dp[i-x]==0) dp[i] = 1;
+        else if(i-y>=0 and dp[i-y]==0) dp[i] = 1;
+        else dp[i] = 0;
+    } 
+    cout<<dp[n];
 }
 
 int main(int argc, char const *argv[])
@@ -74,14 +56,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int t;
-    cin>>t;
-    while(t--){
-        string str;
-        cin>>str;
-        lps(str);
-        cout<<endl;
-    }
+    int n, x, y;
+    cin>>n>>x>>y;
+
+    solve(n,x,y);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

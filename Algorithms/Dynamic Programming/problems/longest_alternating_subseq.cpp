@@ -35,37 +35,29 @@ void file_i_o()
     #endif
 }
 
-// https://leetcode.com/problems/longest-palindromic-substring/
+// https://practice.geeksforgeeks.org/problems/longest-alternating-subsequence/0
 
-void lps(string &str)
-{
-    int n = str.length(), maxlen = 1, start = 0;
-    bool dp[n][n];
-    memset(dp,0,sizeof(dp));
-    loop(i,0,n-1)
-        dp[i][i] = 1;
-    loop(i,0,n-2)
-        if(str[i] == str[i+1])
-        {
-            dp[i][i+1] = 1;
-            maxlen = 2; start = i;
+void longestAlternatingSubseq(int arr[], int n) {
+    vector<vector<int> > dp(n,vector<int>(2,1));
+    int ans = INT_MIN;
+    loop(i,1,n-1) {
+        loop(j,0,i-1) {
+            if(arr[i]>arr[j] and dp[i][0]<dp[j][1]+1) 
+                dp[i][0] = dp[j][1] + 1;
+            else if(arr[i]<arr[j] and dp[i][1]<dp[j][0]+1)
+                dp[i][1] = dp[j][0] + 1;
         }
-    for (int k = 3; k <= n; ++k) 
-    {
-        for (int i = 0; i < n - k + 1; ++i) 
-        {
-            int j = i + k - 1;
-            if (dp[i + 1][j - 1] && str[i] == str[j]) 
-            {
-                dp[i][j] = true;
-                if (k > maxlen) {
-                    start = i;  maxlen = k;
-                }
-            }
-        }
+        ans = max(ans,max(dp[i][0],dp[i][1]));
     }
-    string ans = str.substr(start,maxlen);
-    cout<<ans;
+    cout<<ans<<endl;
+
+    // 2nd approach tc:O(n)
+    int ma=1, mi=1;
+    loop(i,1,n-1) {
+        if(arr[i]>arr[i-1]) ma = mi+1;
+        else if(arr[i]<arr[i-1]) mi = ma+1;
+    }
+    cout<<max(mi,ma);
 }
 
 int main(int argc, char const *argv[])
@@ -74,14 +66,13 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int t;
-    cin>>t;
-    while(t--){
-        string str;
-        cin>>str;
-        lps(str);
-        cout<<endl;
-    }
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+
+    longestAlternatingSubseq(arr,n);
+
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -35,37 +35,26 @@ void file_i_o()
     #endif
 }
 
-// https://leetcode.com/problems/longest-palindromic-substring/
+// https://practice.geeksforgeeks.org/problems/longest-common-substring/0
 
-void lps(string &str)
-{
-    int n = str.length(), maxlen = 1, start = 0;
-    bool dp[n][n];
-    memset(dp,0,sizeof(dp));
-    loop(i,0,n-1)
-        dp[i][i] = 1;
-    loop(i,0,n-2)
-        if(str[i] == str[i+1])
-        {
-            dp[i][i+1] = 1;
-            maxlen = 2; start = i;
-        }
-    for (int k = 3; k <= n; ++k) 
-    {
-        for (int i = 0; i < n - k + 1; ++i) 
-        {
-            int j = i + k - 1;
-            if (dp[i + 1][j - 1] && str[i] == str[j]) 
-            {
-                dp[i][j] = true;
-                if (k > maxlen) {
-                    start = i;  maxlen = k;
-                }
+int longestCommonSubstring(string s1, string s2) {
+    int n = s1.length();
+    int m = s2.length();
+    int dp[n+1][m+1];
+    int res=0;
+    loop(i,0,n) {
+        loop(j,0,m) {
+            if(i==0 || j==0)
+                dp[i][j] = 0;
+            else if(s1[i-1] == s2[j-1]) {
+                dp[i][j] = dp[i-1][j-1]+1;
+                res = max(dp[i][j],res);
             }
+            else 
+                dp[i][j] = 0;
         }
     }
-    string ans = str.substr(start,maxlen);
-    cout<<ans;
+    return res;
 }
 
 int main(int argc, char const *argv[])
@@ -74,14 +63,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int t;
-    cin>>t;
-    while(t--){
-        string str;
-        cin>>str;
-        lps(str);
-        cout<<endl;
-    }
+    string s1, s2;
+    cin>>s1>>s2;
+
+    cout<<longestCommonSubstring(s1,s2);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
