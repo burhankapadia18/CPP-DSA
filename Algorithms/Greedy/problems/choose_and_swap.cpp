@@ -35,21 +35,28 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
-    loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
+// https://practice.geeksforgeeks.org/problems/coin-piles/0
+
+string solve(string str) {
+    set<char> S;
+    for(char c:str) {
+        S.insert(c);
     }
-    return profit;
+    for(int i=0; i<str.length(); i++) {
+        S.erase(str[i]);
+        if(S.empty())
+            break;
+        char c1 = *(S.begin());
+        if(c1 < str[i]) {
+            int c2 = str[i];
+            for(int j=0; j<str.length(); j++) {
+                if(str[j] == c1) str[j] = c2;
+                else if(str[j] == c2) str[j] = c1; 
+            }
+            break;
+        }
+    }
+    return str;
 }
 
 int main(int argc, char const *argv[])
@@ -58,13 +65,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
+    string str;
+    cin>>str;
+
+    cout<<solve(str);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

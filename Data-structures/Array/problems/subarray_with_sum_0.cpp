@@ -35,22 +35,7 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
-    loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
-    }
-    return profit;
-}
+// https://practice.geeksforgeeks.org/problems/subarray-with-0-sum/0
 
 int main(int argc, char const *argv[])
 {
@@ -60,11 +45,24 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+
+    ump<int,int> mp;
+    int sum = 0;
+    bool f = 0;
+    loop(i,0,n-1) {
+        sum += arr[i];
+        if(sum == 0 or !(mp.find(sum) == mp.end()) or !arr[i]) {
+            f = 1;
+            break;
+        }
+        else {
+            mp[sum] = 1;
+        }
+    }
+    if(f) cout<<"yes";
+    else cout<<"no";
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

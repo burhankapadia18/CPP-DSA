@@ -35,21 +35,29 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
+// https://www.geeksforgeeks.org/buy-maximum-stocks-stocks-can-bought-th-day/
+
+bool cmp(pair<int,int> a, pair<int,int> b) {
+    return a.ff < b.ff;
+}
+int maxStock(int stock[], int n, int amt) {
+    vector<pair<int,int> > stk;
     loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
+        stk.push_back(make_pair(stock[i],i+1));
     }
-    return profit;
+    sort(stk.begin(),stk.end(),cmp);
+    int total_stock = 0;
+    for(auto p:stk) {
+        if((p.ff*p.ss) <= amt) {
+            amt -= (p.ff*p.ss);
+            total_stock += p.ss;
+        }
+        else {
+            total_stock += (amt/p.ff);
+            amt = amt%p.ff;
+        }
+    }
+    return total_stock;
 }
 
 int main(int argc, char const *argv[])
@@ -60,11 +68,12 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
+    int stock[n];
+    loop(i,0,n-1) cin>>stock[i];
+    int amt;
+    cin>>amt;
+
+    cout<<maxStock(stock,n,amt);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -35,21 +35,32 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
-    loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
+// https://www.geeksforgeeks.org/maximum-sum-nodes-binary-tree-no-two-adjacent/
+
+class node {
+    public:
+    int data;
+    node *left, *right;
+    node(int data) {
+        this->data = data;
+        left = right = NULL;
     }
-    return profit;
+};
+
+ump<node*,int> dp;
+int solve(node *root) {
+    if(!root) return 0;
+    if(!(dp.find(root) == dp.end())) return dp[root];
+
+    int inc = root->data;
+    if(root->left)
+        inc += solve(root->left->left)+solve(root->left->right);
+    if(root->right)
+        inc += solve(root->right->left)+solve(root->right->right);
+
+    int exc = solve(root->left)+solve(root->right);
+
+    return dp[root] = max(inc,exc);
 }
 
 int main(int argc, char const *argv[])
@@ -58,13 +69,6 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

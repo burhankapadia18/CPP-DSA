@@ -35,21 +35,34 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
-    loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
+// https://practice.geeksforgeeks.org/problems/mobile-numeric-keypad5456/1
+
+int kpd[4][3] = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9},
+    {-1, 0, -1},
+};
+bool isSafe(int i, int j) {
+    return (i>=0 and j>=0 and i<4 and j<3 and kpd[i][j]!=-1);
+}
+int dp[10][1005];
+int solve(int i, int j, int n) {
+    if(n == 1) 
+        return 1;
+    if(dp[kpd[i][j]][n] != -1)
+        return dp[kpd[i][j]][n];
+
+    int ans=0;
+    ans += solve(i,j,n-1);
+    int x[] = {-1,1,0,0};
+    int y[] = {0,0,-1,1};
+    loop(k,0,3) {
+        if(isSafe(i+x[k],j+y[k])) {
+            ans += solve(i+x[k],j+y[k],n-1);
+        }
     }
-    return profit;
+    return dp[kpd[i][j]][n] = ans;
 }
 
 int main(int argc, char const *argv[])
@@ -60,11 +73,17 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
+
+    int ans=0;
+    memset(dp,-1,sizeof(dp));
+    loop(i,0,3) {
+        loop(j,0,2) {
+            if(kpd[i][j] != -1) {
+                ans += solve(i,j,n);
+            }
+        }
+    }
+    cout<<ans;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

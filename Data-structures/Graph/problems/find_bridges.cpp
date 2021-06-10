@@ -35,21 +35,25 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
-    loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
+// https://www.geeksforgeeks.org/bridge-in-a-graph/
+
+void dfs(int u, int parent, vector<int> &vis, vector<int> &tin, vector<int> &low, int timer, vector<int> adj[]) {
+    vis[u] = 1;
+    tin[u] = low[u] = timer++;
+    for(int v:adj[u]) {
+        if(v == parent) 
+            continue;
+        if(!vis[v]) {
+            dfs(v,u,vis,tin,low,timer,adj);
+            low[u] = min(low[u],low[v]);
+            if(low[v] > tin[u]) {
+                cout<<u<<" "<<v<<endl;
+            }
+        }
+        else {
+            low[u] = min(low[u],tin[v]);
+        }
     }
-    return profit;
 }
 
 int main(int argc, char const *argv[])
@@ -58,13 +62,23 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
+    int n, m;
+    cin>>n>>m;
+    vector<int> adj[n+1];
+    loop(i,1,m) {
+        int x, y;
+        cin>>x>>y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+
+    vector<int> tin(n+1,-1), low(n+1,-1), vis(n+1,0);
+    int timer=1;
+    loop(i,1,n) {
+        if(!vis[i]) {
+            dfs(i,-1,vis,tin,low,timer,adj);
+        }
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

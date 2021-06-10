@@ -1,12 +1,11 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int first_repeating_element(int a[], int n){
+int first_repeating_element(int a[], int n) {
     int N = 1e6;
     int idx[N];
     int mndix = INT_MAX;
-    for(int i=0; i<N; i++)
-        idx[i] = -1;
+    memset(idx,-1,sizeof(idx));
     for(int i=0; i<n; i++){
         if(idx[a[i]] != -1){
             mndix = min(mndix,idx[a[i]]);

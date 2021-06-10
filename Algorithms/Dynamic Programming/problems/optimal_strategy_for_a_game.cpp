@@ -35,7 +35,21 @@ void file_i_o()
     #endif
 }
 
+// https://practice.geeksforgeeks.org/problems/optimal-strategy-for-a-game/0
 
+int dp[1005][1005];
+int maxMoney(int arr[], int i, int j) {
+    if(i>j)
+        return 0;
+    
+    if(dp[i][j] != -1)
+        return dp[i][j];
+
+    int x = arr[i] + min(maxMoney(arr,i+2,j),maxMoney(arr,i+1,j-1));
+    int y = arr[j] + min(maxMoney(arr,i+1,j-1),maxMoney(arr,i,j-2));
+
+    return dp[i][j] = max(x,y);
+}
 
 int main(int argc, char const *argv[])
 {
@@ -48,18 +62,8 @@ int main(int argc, char const *argv[])
     int arr[n];
     loop(i,0,n-1) cin>>arr[i];
 
-    int N = 1e6;
-    int idx[N];
-    memset(idx,-1,sizeof(idx));
-    for(int i=0; i<n; i++) {
-        if(idx[arr[i]] == -1) {
-            idx[arr[i]] = i;
-        }
-        else {
-            cout<<idx[arr[i]]+1;
-            break;
-        }
-    }
+    memset(dp,-1,sizeof(dp));
+    cout<<maxMoney(arr,0,n-1);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

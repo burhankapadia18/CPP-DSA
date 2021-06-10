@@ -56,13 +56,6 @@ int kosaraju(vector<int> adj[], int V) {
             revAdj[v].push_back(u);
         }
     }
-    // loop(u,0,V-1) {
-    //     cout<<u<<":";
-    //     for(int v:revAdj[u]) {
-    //         cout<<v<<",";
-    //     }
-    //     cout<<endl;
-    // }
     vector<int> order;
     vector<bool> vis(V,0), vis1(V,0);
     onrev = 0;

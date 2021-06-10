@@ -35,21 +35,31 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
-    loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
+// https://www.geeksforgeeks.org/count-derangements-permutation-such-that-no-element-appears-in-its-original-position/
+
+int solve(int n, vector<int> &dp) {
+    if(n==1) return 0;
+    if(n==2) return 1;
+
+    return dp[n] = (n-1)*(solve(n-1,dp)+solve(n-2,dp));
+}
+int solve(int n) {
+    int dp[n+1];
+    dp[1] = 0;
+    dp[2] = 1;
+    for(int i=3; i<=n; i++) {
+        dp[i] = (i-1)*(dp[i-1]+dp[i-2]);
     }
-    return profit;
+    return dp[n];
+
+    // space optimized
+    // int a=0, b=1;
+    // for(int i=3; i<=n; i++) {
+    //     int temp = (i-1)*(b+a);
+    //     a = b;
+    //     b = temp;
+    // }
+    // return b;
 }
 
 int main(int argc, char const *argv[])
@@ -60,11 +70,9 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
+
+    vector<int> dp(n+1,-1);
+    cout<<solve(n,dp)<<" "<<solve(n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

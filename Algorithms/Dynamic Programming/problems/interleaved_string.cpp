@@ -35,21 +35,22 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
-    loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
-    }
-    return profit;
+// https://practice.geeksforgeeks.org/problems/interleaved-strings/1
+
+int dp[1005][1005];
+bool isInterleaved(string a, string b, string c, int l1, int l2, int len) {
+    if(len == 0)
+        return 1;
+        if(dp[l1][l2] != -1)
+            return dp[l1][l2];
+    
+    bool x, y;
+    if(l1-1>=0 and a[l1-1]==c[len-1])
+        x = isInterleaved(a,b,c,l1-1,l2,len-1);
+    if(l2-1>=0 and b[l2-1]==c[len-1])
+        y = isInterleaved(a,b,c,l1,l2-1,len-1);
+    
+    return dp[l1][l2] = x or y;
 }
 
 int main(int argc, char const *argv[])
@@ -58,13 +59,16 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
+    string a, b, c;
+    cin>>a>>b>>c;
+
+    int len=c.length(), l1=a.length(), l2=b.length();
+    if(len != l1+l2)
+        cout<<0;
+    else {
+        memset(dp,-1,sizeof(dp));
+        cout<<isInterleaved(a,b,c,l1,l2,len);
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -35,21 +35,50 @@ void file_i_o()
     #endif
 }
 
-/*
-Best time to buy and Sell stock
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-*/
-int maxProfit(vector<int> &price) {
-    int curr_price = INT_MAX, profit = 0;
-    int n = price.size();
-    loop(i,0,n-1) {
-        if(price[i] < curr_price)
-            curr_price = price[i];
-        // else if(price[i]-curr_price > profit)
-        //     profit = price[i] - curr_price;
-        profit = max(profit,price[i]-curr_price);
+// https://practice.geeksforgeeks.org/problems/minimum-platforms/0
+
+bool cmp1(pair<int,int> a, pair<int,int> b) {
+    return a.ff < b.ff;
+}
+class cmp2 {
+    public:
+    bool operator()(pair<int,int> a, pair<int,int> b) {
+        return a.ff > b.ff;
     }
-    return profit;
+};
+int reqPlatforms(int arr[], int dep[], int n) {
+    // normal approach 
+    vector<pair<int,int> > train(n);
+    loop(i,0,n-1) train[i] = make_pair(arr[i],dep[i]);
+    sort(train.begin(),train.end(),cmp1);
+    priority_queue<pair<int,int>, vector<pair<int,int> >, cmp2> pq;
+    int pf = 1;
+    pq.push(make_pair(train[0].ss,pf));
+    loop(i,1,n-1) {
+        int en = pq.top().ff, p = pq.top().ss;
+        if(en < train[i].ff) {
+            pq.pop();
+            pq.push(make_pair(train[i].ss,p));
+        }
+        else {
+            pq.push(make_pair(train[i].ss,++pf));
+        }
+    }
+    return pf;
+
+    // optimized approach
+    // sort(arr,arr+n);
+    // sort(dep,dep+n);
+    // int i=1, j=0;
+    // int pf = 1;
+    // while(i<n) {
+    //     if(arr[i] <= dep[j])
+    //         pf++;
+    //     else 
+    //         j++;
+    //     i++;
+    // }
+    // return pf;
 }
 
 int main(int argc, char const *argv[])
@@ -60,11 +89,14 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
-    vector<int> price(n);
-    loop(i,0,n-1)
-        cin>>price[i];
-    
-    cout<<maxProfit(price);
+    int arr[n], dep[n];
+    loop(i,0,n-1) {
+        int a, d;
+        cin>>a>>d;
+        arr[i] = a; dep[i] = d;
+    }
+
+    cout<<reqPlatforms(arr,dep,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
