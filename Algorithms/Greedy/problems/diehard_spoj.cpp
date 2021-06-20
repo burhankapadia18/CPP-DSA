@@ -35,7 +35,24 @@ void file_i_o()
     #endif
 }
 
+// https://www.spoj.com/problems/DIEHARD/
 
+int dp[1005][1005];
+int maxtime(int health, int armor, int state) {
+    // air=1, water=2, fire=3;
+    if(health<=0 or armor<=0) {
+        return 0;
+    }
+    if(dp[health][armor] != -1) {
+        return dp[health][armor];
+    }
+    int ans1=0, ans2=0, ans3=0;
+    if(state != 1) ans1 = 1 + maxtime(health+3,armor+2,1);
+    if(state != 2) ans2 = 1 + maxtime(health-5,armor-10,2);
+    if(state != 3) ans3 = 1 + maxtime(health-20,armor+5,3);
+    
+    return dp[health][armor] = max(ans1,max(ans2,ans3));
+}
 
 int main(int argc, char const *argv[])
 {
@@ -43,17 +60,18 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
+    int t;
+    cin>>t;
+    while(t--) {
+        int health, armor;
+        cin>>health>>armor;
+        memset(dp,-1,sizeof(dp));
+        int c1 = maxtime(health+3,armor+2,1);
+        int c2 = maxtime(health-5,armor-10,2);
+        int c3 = maxtime(health-20,armor+5,3);
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+        cout<<max(c1,max(c2,c3))<<endl;
     }
-    cout<<rev;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

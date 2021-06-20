@@ -35,7 +35,7 @@ void file_i_o()
     #endif
 }
 
-
+// https://practice.geeksforgeeks.org/problems/maximize-sum-after-k-negations/0
 
 int main(int argc, char const *argv[])
 {
@@ -45,15 +45,24 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    int k;
+    cin>>k;
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    sort(arr,arr+n);
+    loop(i,0,n-1) {
+        if(arr[i]<0 and k>0) {
+            arr[i] = -arr[i];
+            k--;
+        }
     }
-    cout<<rev;
+    int sum=0;
+    loop(i,0,n-1) sum += arr[i];
+    cout<<sum<<endl;
+    int x = *min_element(arr,arr+n);
+    if(k&1) sum -= 2*x;
+    cout<<sum;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

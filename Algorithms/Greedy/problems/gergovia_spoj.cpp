@@ -35,7 +35,7 @@ void file_i_o()
     #endif
 }
 
-
+// https://www.spoj.com/problems/GERGOVIA/
 
 int main(int argc, char const *argv[])
 {
@@ -43,17 +43,30 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    while(true) {
+        int n;
+        cin>>n;
+        if(n==0) break;
+        vector<pair<int,int> > buy, sell;
+        loop(i,0,n-1) {
+            int a;
+            cin>>a;
+            if(a >= 0) buy.push_back(make_pair(a,i));
+            else sell.push_back(make_pair(a,i));
+        }
+        int ans=0;
+        int i=0, j=0;
+        while(i<buy.size() and j<sell.size()) {
+            int x = min(buy[i].ff,-sell[j].ff);
+            buy[i].ff -= x;
+            sell[j].ff += x;
+            int dist = abs(buy[i].ss-sell[j].ss);
+            ans += (x*dist);
+            if(buy[i].ff == 0) i++;
+            if(sell[j].ff == 0) j++;
+        }
+        cout<<ans<<endl;
     }
-    cout<<rev;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

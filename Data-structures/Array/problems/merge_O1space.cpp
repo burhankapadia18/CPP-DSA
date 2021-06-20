@@ -17,6 +17,22 @@ void merge_o1space(int a[], int n, int b[], int m)
             b[i] = last;
         }
     }
+
+    // optimized solution
+    int i = 0, j = 0, k = n - 1;
+    // Untill i less than equal to k
+    // or j is less tha m
+    while (i <= k and j < m) {
+        if (a[i] < b[j])
+            i++;
+        else {
+            swap(b[j++], a[k--]);
+        }
+    }
+    // Sort first array
+    sort(a, a + n);
+    // Sort second array
+    sort(b, b + m);
 }
 
 int main(int argc, char const *argv[])

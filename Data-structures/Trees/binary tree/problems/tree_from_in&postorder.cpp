@@ -35,7 +35,55 @@ void file_i_o()
     #endif
 }
 
+// ************************************************************************
+class node {
+	public:
+	int data;
+	int hd;
+	node *left;
+	node *right;
+	node(int info) {
+		data = info;
+		left = right = NULL;
+	}
+};
+void deleteTree(node *root) {
+	if(!root)
+		return;
+	deleteTree(root->left);
+	deleteTree(root->right);
+	delete(root);
+}
+// ************************************************************************
 
+// https://practice.geeksforgeeks.org/problems/construct-tree-1/1
+
+node *buildBinaryTreeUtil(int *in, int *pr, int inS, int inE, int prS, int prE) {
+	if(inS > inE)
+		return NULL;
+	node *root = new node(pr[prS]);
+	int rootIndex = -1;
+	for(int i=inS; i<=inE; i++) {
+		if(in[i] == root->data) {
+			rootIndex = i;
+			break;
+		}
+    }
+	int LinS = inS;
+	int LinE = rootIndex-1;
+	int RinS = rootIndex+1;
+	int RinE = inE;
+	int LprS = prS+1;
+	int LprE = LinE-LinS+LprS;
+	int RprS = LprE+1;
+	int RprE = prE;
+	root->left = buildBinaryTreeUtil(in,pr,LinS,LinE,LprS,LprE);
+	root->right = buildBinaryTreeUtil(in,pr,RinS,RinE,RprS,RprE);
+	return root;
+}
+node *builTree(int *in, int *pr, int size) {
+	return buildBinaryTreeUtil(in,pr,0,size-1,0,size-1);
+}
 
 int main(int argc, char const *argv[])
 {
@@ -45,16 +93,13 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
+    int in[n], pr[n];
+    loop(i,0,n-1) cin>>in[i];
+    loop(i,0,n-1) cin>>pr[i];
+    node *root = builTree(in,pr,n);
 
 
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
-    }
-    cout<<rev;
-
+    deleteTree(root);
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
         cout<<"\n\nExecuted in: "<<double(end-begin) / CLOCKS_PER_SEC*1000<<" ms";

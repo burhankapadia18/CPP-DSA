@@ -35,8 +35,19 @@ void file_i_o()
     #endif
 }
 
+// https://www.geeksforgeeks.org/program-for-shortest-job-first-or-sjf-cpu-scheduling-set-1-non-preemptive/
 
-
+bool cmp(vector<int> &a, vector<int> &b) {
+    if(a[1] == b[1]) {
+        if(a[2] == b[2]) {
+            return a[0] < b[0];
+        }
+        else {
+            return a[2] < b[2];
+        }
+    }
+    return a[1] < b[1];
+}
 int main(int argc, char const *argv[])
 {
     clock_t begin = clock();
@@ -45,15 +56,37 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
-
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    vector<vector<int> > arr(n,vector<int>(3));
+    loop(i,0,n-1) {
+        int id, tym, burst;
+        cin>>id>>tym>>burst;
+        arr[i][0] = id; arr[i][1] = tym; arr[i][2] = burst;
     }
-    cout<<rev;
+
+    sort(arr.begin(), arr.end(),cmp);
+    priority_queue<vector<int>, vector<vector<int> >,greater<vector<int> > > pq;
+    vector<int> temp(3);
+    // temp[0] = arr[0][2]; temp[1] = arr[0][1]; temp[2] = arr[0][0];
+    // pq.push(temp);
+    pq.push({arr[0][2],arr[0][1],arr[0][0]});
+    int i=1;
+    int curr_time=0;
+    vector<int> ans;
+    while(!pq.empty()) {
+        int burst = pq.top()[0];
+        int id = pq.top()[2];
+        pq.pop();
+        ans.push_back(id);
+        curr_time += burst;
+        while(i<n and arr[i][1]<=curr_time) {
+            // temp[0] = arr[i][2]; temp[1] = arr[i][1]; temp[2] = arr[i][0];
+            // pq.push(temp);
+            pq.push({arr[i][2],arr[i][1],arr[i][0]});
+            i++;
+        }
+    }
+    for(int i:ans)
+        cout<<i<<" ";
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -35,7 +35,7 @@ void file_i_o()
     #endif
 }
 
-
+// https://practice.geeksforgeeks.org/problems/minimum-cost-of-ropes/0
 
 int main(int argc, char const *argv[])
 {
@@ -45,15 +45,19 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    set<int> S;
+    loop(i,0,n-1) S.insert(arr[i]);
+    int cost=0;
+    while(S.size()>1) {
+        int r1 = *S.begin(); S.erase(r1);
+        int r2 = *S.begin(); S.erase(r2);
+        cost += r1+r2;
+        S.insert(r1+r2);
     }
-    cout<<rev;
+    cout<<cost;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

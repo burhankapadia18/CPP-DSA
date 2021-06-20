@@ -35,6 +35,7 @@ void file_i_o()
     #endif
 }
 
+// https://www.geeksforgeeks.org/find-maximum-sum-possible-equal-sum-three-stacks/
 
 
 int main(int argc, char const *argv[])
@@ -43,17 +44,35 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
+    int n1, n2, n3;
+    cin>>n1>>n2>>n3;
+    int s1[n1], s2[n2], s3[n3];
+    loop(i,0,n1-1) cin>>s1[i];
+    loop(i,0,n2-1) cin>>s2[i];
+    loop(i,0,n3-1) cin>>s3[i];
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    int sum1=0, sum2=0, sum3=0;
+    loop(i,0,n1-1) sum1 += s1[i];
+    loop(i,0,n2-1) sum2 += s2[i];
+    loop(i,0,n3-1) sum3 += s3[i];
+    int t1=0, t2=0, t3=0;
+    int ans=0;
+    while(t1<n1 and t2<n2 and t3<n3) {
+        if(sum1 == sum2 and sum2 == sum3) {
+            ans = sum1;
+            break;
+        }
+        if(sum1 >= sum2 and sum1>=sum3) {
+            sum1 -= s1[t1++];
+        }
+        else if(sum2 >= sum1 and sum2 >= sum3) {
+            sum2 -= s2[t2++];
+        }
+        else if(sum3 >= sum1 and sum3 >= sum2) {
+            sum3 -= s3[t3++];
+        }
     }
-    cout<<rev;
+    cout<<ans;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

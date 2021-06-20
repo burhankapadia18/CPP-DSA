@@ -328,28 +328,22 @@ node *bst_from_preorder(int arr[], int start, int end){
 int main(){
 
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 
 	bst b1; 
 
 	int n;
 	cin>>n;
-	// int data;
-	// while(n--){
-	// 	cin>>data;
-	// 	b1.root = b1.insert(b1.root,data);
-	// }
-	int a[n];
-	for(int i=0; i<n; i++)
-		cin>>a[i];
-
-	b1.root = bst_from_preorder(a,0,n-1);
+	int data;
+	while(n--) {
+		cin>>data;
+		b1.root = b1.insert(b1.root,data);
+	}
 
 	b1.inorder_traversal_1(b1.root);
-	cout<<endl;
-	b1.levelorder_traversal();
+	bst2dll(b1.root);
 	
 
 	deleteTree(b1.root);

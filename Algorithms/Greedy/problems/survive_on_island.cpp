@@ -35,6 +35,7 @@ void file_i_o()
     #endif
 }
 
+// https://www.geeksforgeeks.org/survival/
 
 
 int main(int argc, char const *argv[])
@@ -43,17 +44,16 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
+    int S, N, M;
+    cin>>S>>N>>M;
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
-    }
-    cout<<rev;
+    int s = S - (S/7);
+    int reqfood = S*M;
+    int days;
+    if(reqfood%N == 0) days = reqfood/N;
+    else days = (reqfood/N)+1;
+    if(days <= s) cout<<"yes "<<days;
+    else cout<<"no"; 
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

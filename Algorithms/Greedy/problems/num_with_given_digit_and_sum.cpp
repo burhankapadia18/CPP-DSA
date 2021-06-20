@@ -35,7 +35,7 @@ void file_i_o()
     #endif
 }
 
-
+// https://practice.geeksforgeeks.org/problems/smallest-number5829/1
 
 int main(int argc, char const *argv[])
 {
@@ -43,17 +43,32 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
+    int S, D;
+    cin>>S>>D;
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    if((9*D) < S) {
+        cout<<"-1";
     }
-    cout<<rev;
+    else {
+        string ans = "";
+        looprev(i,D,1) {
+            if(S > 9) {
+                ans = "9" + ans;
+                S -= 9;
+            }
+            else {
+                ans = to_string(S-1) + ans;
+                i--;
+                while(i>1) {
+                    ans = "0" + ans;
+                    i--;
+                }
+                ans = "1" + ans;
+                break;
+            }
+        }
+        cout<<ans;
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

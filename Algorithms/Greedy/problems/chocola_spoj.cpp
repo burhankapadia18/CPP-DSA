@@ -35,6 +35,8 @@ void file_i_o()
     #endif
 }
 
+// https://www.spoj.com/problems/CHOCOLA/
+// https://www.geeksforgeeks.org/minimum-cost-cut-board-squares/
 
 
 int main(int argc, char const *argv[])
@@ -43,17 +45,38 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
+    int n, m;
+    cin>>n>>m;
+    n--; m--;
+    int x[n], y[m];
+    loop(i,0,n-1) cin>>x[i];
+    loop(i,0,m-1) cin>>y[i];
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    sort(x,x+n,greater<int>()); sort(y,y+m,greater<int>());
+    int hc=1, vc=1;
+    int cost=0;
+    int i=0, j=0;
+    while(i<n and j<m) {
+        if(x[i] > y[j]) {
+            cost += (x[i]*hc);
+            vc++;
+            i++;
+        }
+        else {
+            cost += (y[j]*vc);
+            hc++;
+            j++;
+        }
     }
-    cout<<rev;
+    while(i<n) {
+        cost += (x[i]*hc);
+        i++;
+    }
+    while(j<m) {
+        cost += (y[j]*vc);
+        j--;
+    }
+    cout<<cost;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

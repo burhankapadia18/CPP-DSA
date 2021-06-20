@@ -35,7 +35,7 @@ void file_i_o()
     #endif
 }
 
-
+// https://www.spoj.com/problems/ARRANGE/
 
 int main(int argc, char const *argv[])
 {
@@ -43,17 +43,27 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    int t;
+    cin>>t;
+    while(t--) {
+        int n;
+        cin>>n;
+        int arr[n];
+        int onectr=0;
+        loop(i,0,n-1) {
+            cin>>arr[i];
+            if(arr[i]==1) onectr++;
+        }
+        sort(arr,arr+n,greater<int>());
+        loop(i,1,onectr) cout<<1<<" ";
+        if((n-onectr)==2 and arr[0]==3 and arr[1]==2) 
+            cout<<2<<" "<<3<<endl;
+        else {
+            loop(i,0,n-onectr)
+                cout<<arr[i]<<" ";
+            cout<<endl;
+        }
     }
-    cout<<rev;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

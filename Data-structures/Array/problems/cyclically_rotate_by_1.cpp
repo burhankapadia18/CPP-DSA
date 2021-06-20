@@ -6,8 +6,8 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/Desktop/C++14/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/Desktop/C++14/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 
     int n;
@@ -16,10 +16,14 @@ int main(int argc, char const *argv[])
     for(int i=0; i<n; i++)
         cin>>a[i];
 
-    int temp = a[0];
-    for(int i=0; i<n-1; i++)
-        a[i] = a[i+1];
-    a[n-1] = temp;
+    int temp = a[n-1];
+    int prev = a[0];
+    for(int i=1; i<n; i++) {
+        int t = a[i];
+        a[i] = prev;
+        prev = t;
+    }
+    a[0] = temp;
 
     for(int i=0; i<n; i++)
         cout<<a[i]<<" ";

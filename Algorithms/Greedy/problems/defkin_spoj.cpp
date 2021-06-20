@@ -35,6 +35,7 @@ void file_i_o()
     #endif
 }
 
+// https://www.spoj.com/problems/DEFKIN/
 
 
 int main(int argc, char const *argv[])
@@ -43,17 +44,31 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    int t;
+    cin>>t;
+    while(t--) {
+        int w, h, n;
+        cin>>w>>h>>n;
+        vector<int> x, y;
+        x.push_back(0);
+        y.push_back(0);
+        loop(i,0,n-1) {
+            int x1, y1;
+            cin>>x1>>y1;
+            x.push_back(x1);
+            y.push_back(y1);
+        }
+        x.push_back(w+1);
+        y.push_back(h+1);
+        sort(x.begin(),x.end());
+        sort(y.begin(),y.end());
+        int mx=0, my=0;
+        for(int i=0; i<x.size()-1; i++) {
+            mx = max(mx,x[i+1]-x[i]-1);
+            my = max(my,y[i+1]-y[i]-1);
+        }
+        cout<<mx*my<<endl;
     }
-    cout<<rev;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -35,7 +35,7 @@ void file_i_o()
     #endif
 }
 
-
+// https://www.geeksforgeeks.org/smallest-subset-sum-greater-elements/
 
 int main(int argc, char const *argv[])
 {
@@ -45,15 +45,19 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    sort(arr,arr+n);
+    int tsum=0;
+    loop(i,0,n-1) tsum += arr[i];
+    int ctr=0, subsum=0;
+    looprev(i,n-1,0) {
+        subsum += arr[i]; ctr++;
+        if(subsum > (tsum-subsum))
+            break;
     }
-    cout<<rev;
+    cout<<ctr;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

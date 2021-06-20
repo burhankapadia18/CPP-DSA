@@ -6,7 +6,7 @@ void union_intersection(int a[], int n, int b[], int m)
     set<int> merged;
     vector<int> intersection;
 
-        for(int i=0; i<n; i++)
+    for(int i=0; i<n; i++)
         merged.insert(a[i]);
     for(int i=0; i<m; i++)
         merged.insert(b[i]);

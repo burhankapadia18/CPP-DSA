@@ -35,7 +35,7 @@ void file_i_o()
     #endif
 }
 
-
+// https://www.geeksforgeeks.org/maximum-product-subset-array/
 
 int main(int argc, char const *argv[])
 {
@@ -45,15 +45,33 @@ int main(int argc, char const *argv[])
     // write your code here
     int n;
     cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    int prdct = 1;
+    int negcount = 0, negprdct=1, maxneg=INT_MIN;
+    int zerocount = 0;
+    loop(i,0,n-1) {
+        if(arr[i] == 0) {
+            zerocount++;
+            continue;
+        }
+        if(arr[i] < 0) {
+            negcount++;
+            maxneg = max(maxneg,arr[i]);
+        }
+        prdct *= arr[i];
     }
-    cout<<rev;
+    if(zerocount == n) {
+        prdct = 0;
+    }
+    else if(negcount == 1 and zerocount+negcount == n) {
+        prdct = 0;
+    }
+    else if((negcount%2) != 0) {
+        prdct /= maxneg;
+    }
+    cout<<prdct;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

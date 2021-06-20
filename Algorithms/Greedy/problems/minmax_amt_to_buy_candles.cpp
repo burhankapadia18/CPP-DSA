@@ -35,6 +35,7 @@ void file_i_o()
     #endif
 }
 
+// https://practice.geeksforgeeks.org/problems/shop-in-candy-store/0
 
 
 int main(int argc, char const *argv[])
@@ -43,17 +44,27 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int n;
+    int n, k;
     cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    cin>>k;
 
-
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
+    sort(arr,arr+n);
+    int minCost=0, maxCost=0;
+    int i=0, j=n-1;
+    while(i<=j) {
+        minCost += arr[i];
+        j -= k;
+        i++;
     }
-    cout<<rev;
+    i=0; j=n-1;
+    while(i<=j) {
+        maxCost += arr[j];
+        i += k;
+        j--;
+    }
+    cout<<minCost<<" "<<maxCost;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
