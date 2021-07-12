@@ -54,11 +54,13 @@ void spiral_traversal(vector<vector<int> > &a, int n, int m){
         column_end--;
 
         // for row end
+        if(row_start <= row_end)
         for(int col = column_end; col>=column_start; col--)
             cout<<a[row_end][col]<<" ";
         row_end--;
 
         // for column start
+        if(column_start <= column_end)
         for(int row = row_end; row>=row_start; row--)
             cout<<a[row][column_start]<<" ";
         column_start++;

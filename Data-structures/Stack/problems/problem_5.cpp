@@ -10,7 +10,7 @@ public:
 
     void push(int data){
         element_stack.push(data);
-        if(element_stack.empty() || min_stack.top()>=data)
+        if(min_stack.empty() || min_stack.top()>=data)
             min_stack.push(data);
         else 
             min_stack.push(min_stack.top());

@@ -35,25 +35,35 @@ void file_i_o()
     #endif
 }
 
-
-
+void combi(int m, char prev, string ans, vector<string> &strvec) {
+    if(m==0) {
+        strvec.push_back(ans);
+        return;
+    }
+    char colors[] = {'r','g','b'};
+    for(char c:colors) {
+        if(c != prev) {
+            combi(m-1,c,ans+c,strvec);
+        }
+    }
+}
+int colorTheGrid(int m, int n) {
+    vector<string> strvec;
+    combi(m,' ',"",strvec);
+    
+    return strvec.size();
+}
 int main(int argc, char const *argv[])
 {
     clock_t begin = clock();
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
+    int n, m;
+    cin>>m>>n;
 
+    cout<<colorTheGrid(m,n);
 
-    int rev=0;
-    while(n!=0) {
-        int temp = n%10;
-        rev = (rev*10) + temp;
-        n = n/10;
-    }
-    cout<<rev;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

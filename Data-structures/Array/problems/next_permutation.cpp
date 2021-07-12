@@ -59,6 +59,7 @@ void nextPermutation(int arr[], int n)
             if(arr[idx] < arr[i])
                 if(arr[minidx] > arr[i])
                     minidx = i;
+        cout<<minidx<<endl;
         swap(arr[idx],arr[minidx]);
         reverse(arr+idx+1,arr+n);
         loop(i,0,n-1)

@@ -30,8 +30,8 @@ void file_i_o()
     cin.tie(0);
     cout.tie(0);
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/Desktop/C++14/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/Desktop/C++14/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 }
 
@@ -43,7 +43,18 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    
+    ll t;
+    cin>>t;
+    while(t--) {
+        ll x1, x2, y1, y2, z1, z2;
+        cin>>x1>>x2>>y1>>y2>>z1>>z2;
+        if(x2>=x1 and y2>=y1 and z2<=z1) {
+            cout<<"YES"<<endl;
+        }
+        else {
+            cout<<"NO"<<endl;
+        }
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
