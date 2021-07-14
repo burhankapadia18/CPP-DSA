@@ -30,20 +30,16 @@ void file_i_o()
     cin.tie(0);
     cout.tie(0);
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/Desktop/C++14/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/Desktop/C++14/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 }
 
-void display(vector<vector<bool> > &grid, int n)
-{
-    for(int i=0; i<n; i++)
-    {
+void display(vector<vector<bool> > &grid, int n) {
+    for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++)
-            if(grid[i][j])
-                cout<<"Q"<<" ";
-            else 
-                cout<<"."<<" ";
+            if(grid[i][j]) cout<<"Q"<<" ";
+            else cout<<"."<<" ";
         cout<<'\n';
     }
     cout<<'\n';
@@ -51,36 +47,31 @@ void display(vector<vector<bool> > &grid, int n)
 
 // Basic approach
 int Qcount = 0;
-bool isSafe(vector<vector<bool> > &grid, int row, int col, int &n)
-{   // takes O(n) time
+bool isSafe(vector<vector<bool> > &grid, int row, int col, int &n) {
+    // takes O(n) time
     // column check
     for(int i=row-1; i>=0; i--)
-        if(grid[i][col])
-            return 0;
+        if(grid[i][col]) return 0;
     // left upper diagonal
     for(int i=row-1, j=col-1; i>=0 && j>=0; i--, j--)
-        if(grid[i][j])
-            return 0;
+        if(grid[i][j]) return 0;
     // right upper diagonal
     for(int i=row-1, j=col+1; i>=0 && j<n; i--, j++)
-        if(grid[i][j])
-            return 0;
+        if(grid[i][j]) return 0;
     return 1;
 }
-void countNqueen(vector<vector<bool> > &grid, int curr_row, int &n)
-{   // base case
-    if(curr_row == n)
-    {   // we found one way
+void countNqueen(vector<vector<bool> > &grid, int curr_row, int &n) {
+    // base case
+    if(curr_row == n) {
+        // we found one way
         Qcount++;
         display(grid,n);
         cout<<endl;
         return;
     }
-
-    for(int i=0; i<n; i++)
-    {   // goto each spot/column
-        if(isSafe(grid,curr_row,i,n))
-        {
+    for(int i=0; i<n; i++) {
+        // goto each spot/column
+        if(isSafe(grid,curr_row,i,n)) {
             grid[curr_row][i] = 1;
             countNqueen(grid,curr_row+1,n);
             grid[curr_row][i] = 0;  // reinitialization
@@ -91,16 +82,12 @@ void countNqueen(vector<vector<bool> > &grid, int curr_row, int &n)
 // Optimized approach using bitmasking
 bitset<100> col, l_d, r_d;    
 int ans = 0;
-void Nqueen_optimized(vector<vector<bool> > &grid, int &n, int cr)
-{
-    if(cr == n)
-    {
+void Nqueen_optimized(vector<vector<bool> > &grid, int &n, int cr) {
+    if(cr == n) {
         ans++; display(grid,n); return;
     }
-    for(int c=0; c<n; c++)
-    {
-        if(!col[c] && !l_d[cr-c+n-1] && !r_d[cr+c])
-        {
+    for(int c=0; c<n; c++) {
+        if(!col[c] && !l_d[cr-c+n-1] && !r_d[cr+c]) {
             col[c] = l_d[cr-c+n-1] = r_d[cr+c] = grid[cr][c] = 1;
             Nqueen_optimized(grid,n,cr+1);
             col[c] = l_d[cr-c+n-1] = r_d[cr+c] = grid[cr][c] = 0;

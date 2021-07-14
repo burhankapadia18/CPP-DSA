@@ -35,24 +35,44 @@ void file_i_o()
     #endif
 }
 
-void combi(int m, char prev, string ans, vector<string> &strvec) {
-    if(m==0) {
-        strvec.push_back(ans);
-        return;
-    }
-    char colors[] = {'r','g','b'};
-    for(char c:colors) {
-        if(c != prev) {
-            combi(m-1,c,ans+c,strvec);
+    vector<vector<int> > rotateGrid(vector<vector<int> >& grid, int k) {
+        int n = grid.size(), m = grid[0].size();
+        while(k--) {
+            int rs = 0, re = n-1, cs = 0, ce = m-1;
+            while(rs<=re and cs<=ce) {
+                int temp = grid[rs+1][ce];
+                for(int i=ce; i>=cs; i--) {
+                    int temp2 = grid[rs][i];
+                    grid[rs][i] = temp;
+                    temp = temp2;
+                }
+                rs++;
+                for(int i=rs; i<=re; i++) {
+                    int temp2 = grid[i][cs];
+                    grid[i][cs] = temp;
+                    temp = temp2;
+                }
+                cs++;
+                for(int i=cs; i<=ce; i++) {
+                    int temp2 = grid[re][i];
+                    grid[re][i] = temp;
+                    temp = temp2;
+                }
+                re--;
+                cout<<temp<<endl;
+                if(rs<=re)
+                for(int i=re; i>=rs; i--) {
+                    cout<<temp<<" ";
+                    int temp2 = grid[i][ce];
+                    grid[i][ce] = temp;
+                    temp = temp2;
+                }
+                ce--;
+            }
         }
+        return grid;
     }
-}
-int colorTheGrid(int m, int n) {
-    vector<string> strvec;
-    combi(m,' ',"",strvec);
-    
-    return strvec.size();
-}
+
 int main(int argc, char const *argv[])
 {
     clock_t begin = clock();
@@ -61,8 +81,16 @@ int main(int argc, char const *argv[])
     // write your code here
     int n, m;
     cin>>m>>n;
+    vector<vector<int> > grid(m, vector<int>(n));
+    loop(i,0,m-1) {
+        loop(j,0,n-1) cin>>grid[i][j];
+    }
 
-    cout<<colorTheGrid(m,n);
+    grid = rotateGrid(grid,1);
+    loop(i,0,m-1) {
+        loop(j,0,n-1) cout<<grid[i][j]<<"\t";
+        cout<<endl;
+    }
 
 
     #ifndef ONLINE_JUDGE
