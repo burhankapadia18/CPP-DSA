@@ -36,21 +36,13 @@ void file_i_o()
 }
 
 
+
 int main(int argc, char const *argv[])
 {
     clock_t begin = clock();
     file_i_o();
 
     // write your code here
-    int n;
-    cin>>n;
-    vector<int> a(n);
-    loop(i,0,n-1) cin>>a[i];
-
-    cout<<a.size()<<endl;
-    cout<<a.capacity()<<endl;
-    cout<<a.max_size()<<endl; 
-
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
