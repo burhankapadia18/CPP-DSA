@@ -35,6 +35,26 @@ void file_i_o()
     #endif
 }
 
+// find subset/subsequences of a given string
+string filterSubset(string &s, int n) {
+    string ans="";
+    int i=0;
+    while(n>0) {
+        int bit = n&1;
+        if(bit) ans += s[i];
+        n = n>>1;
+        i++;
+    }
+    return ans;
+}
+void printSubset(string &s) {
+    int n=s.length();
+    int total = (1<<n);
+    loop(N,0,total-1) {
+        string ss = filterSubset(s,N);
+        cout<<ss<<endl;
+    }
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +62,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    string s;
+    cin>>s;
 
+    printSubset(s);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

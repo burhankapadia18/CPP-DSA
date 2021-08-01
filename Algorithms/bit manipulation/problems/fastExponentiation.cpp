@@ -35,6 +35,18 @@ void file_i_o()
     #endif
 }
 
+// exponentiation/power using bitmasking
+// O(logN) tc
+int power(int a, int n) {
+    int ans=1;
+    while(n>0) {
+        int bit = n&1;
+        if(bit) ans *= a;
+        n = n>>1;
+        a *= a;
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +54,10 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    int a, n;
+    cin>>a>>n;
 
+    cout<<power(a,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

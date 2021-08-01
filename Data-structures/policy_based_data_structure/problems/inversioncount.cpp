@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 				unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<pair<int,int>, null_type, greater<pair<int,int> >, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,6 +40,7 @@ void file_i_o()
     #endif
 }
 
+// count no. of pairs in an array such that a[i]>a[j] and i<j
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +48,17 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
-
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    ordered_set pbds;   // {value,idx} greater<>
+    int cnt=0;
+    loop(i,0,n-1) {
+        pbds.insert({arr[i],i});
+        cnt += pbds.order_of_key({arr[i],i});
+    }
+    cout<<cnt;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

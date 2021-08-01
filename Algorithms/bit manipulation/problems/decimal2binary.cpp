@@ -35,6 +35,28 @@ void file_i_o()
     #endif
 }
 
+// Given a number N, convert it into its binary representation
+int decimal2binary(int n) {
+    int p = 1;
+    int ans = 0;
+    while(n>0) {
+        int bit = n&1;
+        ans += bit*p;
+        n = n>>1;
+        p *= 10;
+    }
+    return ans;
+}
+
+string decimal2binary_(int n) {
+    string ans = "";
+    while(n>0) {
+        int bit = n&1;
+        ans = (char)(bit+'0') + ans;
+        n = n>>1;
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +64,11 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    int n;
+    cin>>n;
 
+    cout<<decimal2binary(INT_MAX)<<endl;
+    cout<<decimal2binary_(INT_MAX);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

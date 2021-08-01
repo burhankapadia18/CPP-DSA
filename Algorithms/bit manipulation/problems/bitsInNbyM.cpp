@@ -35,6 +35,16 @@ void file_i_o()
     #endif
 }
 
+// Replace bits in N by M
+/*
+you are given two 32bit numbers, N and M and two bit positions i and j.
+write a method to set all bits between i and j in equal to M.
+(eg: M becomes a substring of N located at i starting at j)
+
+example:
+N = 10000000000(in binary), M = 10101, i=2, j=6
+output: N = 10001010100 
+*/
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +52,20 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    int n, m, i, j;
+    cin>>n>>m>>i>>j;
 
+    int a, b, mask;
+    // clear bits in n from i to j
+    a = -1<<(j+1);
+    b = (1<<i)-1;
+    mask = a|b;
+    n = n&mask;
+    // fit m in n
+    mask = m<<i;
+    n = n|mask;
+
+    cout<<n;
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -35,6 +35,27 @@ void file_i_o()
     #endif
 }
 
+// Given a number N, find the number of set bits in binary representation of it
+
+// First Method
+int countSetBits(int n) {
+    int ans=0;
+    while(n>0) {
+        ans += (n&1);
+        n = n>>1;
+    }
+    return ans;
+}
+
+// Second Method
+int countSetBits_fast(int n) {
+    int ans=0;
+    while(n>0) {
+        n = n&(n-1);
+        ans++;
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +63,11 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    int n;
+    cin>>n;
 
+    cout<<countSetBits(n)<<" "<<countSetBits_fast(n)<<" ";
+    cout<<__builtin_popcount(n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -35,6 +35,16 @@ void file_i_o()
     #endif
 }
 
+// Problem - Unique Number I
+// given a list of numbers where every number occurs twice execpt one, find the unique number
+
+int uniqueNum(int arr[], int n) {
+    int num = 0;
+    // main concept : A xor B xor A = B (xor of same number is zero)
+    // xor of same number is zero, therefore : A xor A xor B => 0 xor B => B
+    loop(i,0,n-1) num = num^arr[i];
+    return num;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +52,12 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
 
+    cout<<uniqueNum(arr,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

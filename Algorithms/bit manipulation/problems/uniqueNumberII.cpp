@@ -35,6 +35,30 @@ void file_i_o()
     #endif
 }
 
+// Problem - Unique Number II
+// given a list of numbers where every number occurs twice execpt two numbers, find the unique numbers
+
+void uniqueNumberII(int arr[], int n) {
+    // find the xor of all values
+    int x = 0;
+    loop(i,0,n-1) x = x ^ arr[i];
+    // find the position of first set bit in x
+    int pos = 0, tmp=x;
+    while(tmp>0) {
+        if(tmp&1) break;
+        tmp = tmp>>1;
+        pos++;
+    }
+    // xor all the values which have setbit at pos
+    int a=0;
+    loop(i,0,n-1) {
+        int mask = 1<<pos;
+        if((arr[i]&mask)>0) a = a ^ arr[i];
+    }
+    // find the other number by doing xor with x because x = a^b
+    int b = a ^ x;
+    cout<<a<<" "<<b;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +66,12 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
 
+    uniqueNumberII(arr,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

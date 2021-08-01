@@ -35,6 +35,31 @@ void file_i_o()
     #endif
 }
 
+// Problem - Unique Number-III
+// given a list of numbers where every number occurs thrice execpt one, find the unique number
+
+int uniqueNumberIII(int arr[], int n) {
+    // considering 32bit integer
+    int sum[32];
+    memset(sum,0,sizeof(sum));
+    loop(i,0,n-1) {
+        int tmp = arr[i];
+        int pos=0;
+        while(tmp>0) {
+            int bit = tmp&1;
+            tmp = tmp>>1;
+            sum[pos] += bit;
+            pos++;
+        }
+    }
+    int ans=0, p=1;
+    loop(i,0,31) {
+        sum[i] = sum[i]%3;
+        ans += sum[i]*p;
+        p = p<<1;    // p = p*2
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +67,12 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
 
+    cout<<uniqueNumberIII(arr,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

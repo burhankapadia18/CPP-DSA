@@ -35,6 +35,33 @@ void file_i_o()
     #endif
 }
 
+/*
+given an array of integer and number n, find how many integers are 
+there in [1,n) which are divisible by any of the number in the array.
+
+arr[i]>0, n>1
+*/
+
+ll countElements(ll arr[], ll n, ll N) {
+    ll ans=0;
+    ll nss = 1<<n;
+    N--;
+    for(ll i=1; i<nss; i++) {
+        ll tmp = i, pos=0, prod=1, valcnt=0;
+        while(tmp>0) {
+            int bit = tmp&1;
+            if(bit) {
+                prod *= arr[pos];
+                valcnt++;
+            }
+            pos++;
+            tmp = tmp>>1;
+        }
+        ll valans = N/prod;
+        ans += (valcnt&1)? valans:(-valans);
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +69,13 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    tuple<int,int,int> t;
-    pair<int,int> p = {0,1};
+    ll n, N;
+    cin>>n;
+    ll arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    cin>>N;
 
+    cout<<countElements(arr,n,N);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
