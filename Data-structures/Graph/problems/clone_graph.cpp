@@ -53,6 +53,7 @@ void dfs(node *original, node *copy, vector<node*> &vis) {
         if(vis[i->val] == NULL) {
             node *newnode = new node(i->val);
             copy->neighbour.push_back(newnode);
+            dfs(i,newnode,vis);
         }
         else {
             copy->neighbour.push_back(vis[i->val]);

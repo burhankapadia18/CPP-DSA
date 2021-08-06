@@ -69,11 +69,11 @@ int main() {
    //    cout<<"not available";
 
 
-   for(int i=0; i<r; i++){
-      for(int j=0; j<c1; j++)
-         cout<<ans[i][j]<<'\t';
-      cout<<endl;
-   }
+   // for(int i=0; i<r; i++){
+   //    for(int j=0; j<c1; j++)
+   //       cout<<ans[i][j]<<'\t';
+   //    cout<<endl;
+   // }
 
    return 0;
 }

@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 				unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,7 +40,19 @@ void file_i_o()
     #endif
 }
 
+/*
+Problem Name: XOR Profit Problem
+Problem Difficulty: 2
+Problem Constraints: l <= r <= 1000
+Problem Description:
+We are given two coins of value x and y. We have to find the maximum of value of a XOR b where x <= a <= b <= y.
 
+Input Format: We are given two integers x and y
+Sample Input: 5
+6
+Output Format: Print the maximum value of a XOR b
+Sample Output: 3
+*/
 
 int main(int argc, char const *argv[])
 {
@@ -43,10 +60,25 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    vector < int > v = {1, 3, 2, 5};
- cout << v.capacity() << endl; // this prints 4.
- v.push_back(12);
- cout << v.capacity() << endl; // predict this  
+    ll x, y;
+    cin>>x>>y;
+    if(x == y) {
+        cout<<0;
+        return 0;
+    }
+    int pos;
+    for(int i=0; x>0 or y>0; i++) {
+        if((x&1) != (y&1)) pos = i;
+        x = x>>1; y = y>>1;
+    }
+    ll ans = 0;
+    ll p = 1;
+    loop(i,0,pos) {
+        ans += p;
+        p *= 2;
+    }
+    cout<<ans;
+
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
