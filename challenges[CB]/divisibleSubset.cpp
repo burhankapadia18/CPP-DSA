@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,7 +40,8 @@ void file_i_o()
     #endif
 }
 
-
+// codechef : DIVSUBS
+// same as divisible subarray with slight modifications
 
 int main(int argc, char const *argv[])
 {
@@ -43,19 +49,42 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    string s = "]]][[[";
-    int misCnt = 0; // count of mismatch pair
-        stack<char> S;
-        for(int i=0; i<s.length(); i++) {
-            if(s[i] == '[') {
-                S.push(s[i]);
+    int t;
+    cin>>t;
+    while(t--) {
+        int n;
+        cin>>n;
+        vector<int> arr(n);
+        loop(i,0,n-1) cin>>arr[i];
+        vector<vector<int>> freq(n,vector<int>());
+        int presum=0;
+        bool f=0;
+        loop(i,0,n-1) {
+            presum += arr[i];
+            presum %= n;
+            presum = (presum+n)%n;
+            if(presum == 0) {
+                // we found a subarray from 0 till i which is divisible by N
+                cout<<i+1<<endl;
+                loop(j,0,i) cout<<j+1<<" ";
+                cout<<endl;
+                f = 1;
+                break;
             }
-            else {
-                if(!S.empty()) S.pop();
-                else misCnt++;
+            freq[presum].push_back(i);
+        }
+        if(f) break;
+        loop(i,0,n-1) {
+            if(freq[i].size() > 1) {
+                int st = freq[i][0], en = freq[i][1];
+                if(st>en) swap(st,en);
+                cout<<en-st<<endl;
+                loop(j,st+1,en) cout<<j+1<<" ";
+                cout<<endl;
+                break;
             }
         }
-        cout<<misCnt<<endl;
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

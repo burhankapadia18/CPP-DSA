@@ -1,6 +1,5 @@
-690
-24506000
-6752
+3
+1 2 3 
 
 
-Executed in: 18.323 ms
+Executed in: 0.228 ms

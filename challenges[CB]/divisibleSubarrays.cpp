@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,6 +40,14 @@ void file_i_o()
     #endif
 }
 
+/*
+(pigeonhole principle)
+you are given N elements a1,a2,a3,..,aN. find the number of good sub-arrays.
+a good subarray is a subarray [ai,ai+1,..,aj] such that the sum is divisible
+by N.
+
+1 <= N <= 10^5
+*/
 
 
 int main(int argc, char const *argv[])
@@ -43,19 +56,29 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    string s = "]]][[[";
-    int misCnt = 0; // count of mismatch pair
-        stack<char> S;
-        for(int i=0; i<s.length(); i++) {
-            if(s[i] == '[') {
-                S.push(s[i]);
-            }
-            else {
-                if(!S.empty()) S.pop();
-                else misCnt++;
-            }
+    int t;
+    cin>>t;
+    while(t--) {
+        int n;
+        cin>>n;
+        vector<int> arr(n);
+        loop(i,0,n-1) cin>>arr[i];
+        vector<int> freq(n,0);
+        freq[0] = 1;
+        int presum=0;
+        loop(i,0,n-1) {
+            presum += arr[i];
+            presum %= n;
+            presum = (presum+n)%n;
+            freq[presum]++;
         }
-        cout<<misCnt<<endl;
+        ll ans=0;
+        loop(i,0,n-1) {
+            ll tmp = freq[i];
+            ans += tmp*(tmp-1)/2;
+        }
+        cout<<ans<<endl;
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
