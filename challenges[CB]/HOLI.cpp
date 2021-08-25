@@ -40,7 +40,21 @@ void file_i_o()
     #endif
 }
 
-// HOLI spoj
+// HOLI spoj (pigeonhole principle)
+int dfs(list<pair<int,int>> graph[], int &n, int src, vector<bool> &vis, vector<int> &cnt, int &ans) {
+    vis[src] = 1;
+    cnt[src] = 1;
+    for(auto p:graph[src]) {
+        int v = p.ff, wt = p.ss;
+        if(!vis[v]) {
+            cnt[src] += dfs(graph,n,v,vis,cnt,ans);
+            int nx = cnt[v];
+            int ny = n - nx;
+            ans += 2*min(nx,ny) * wt;
+        }
+    }
+    return cnt[src];
+}
 
 int main(int argc, char const *argv[])
 {
@@ -48,6 +62,25 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
+    int t;
+    cin>>t;
+    while(t--) {
+        int n;
+        cin>>n;
+        list<pair<int,int>> graph[n];
+        loop(i,1,n-1) {
+            int x, y, z;
+            cin>>x>>y>>z;
+            graph[x-1].push_back({y-1,z});
+            graph[y-1].push_back({x-1,z});
+        }
+        vector<bool> vis(n,0);
+        vector<int> cnt(n,0);
+        int ans=0;
+        dfs(graph,n,0,vis,cnt,ans);
+        cout<<ans<<endl;
+    }
+
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

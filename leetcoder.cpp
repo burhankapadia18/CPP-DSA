@@ -43,19 +43,7 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    string s = "]]][[[";
-    int misCnt = 0; // count of mismatch pair
-        stack<char> S;
-        for(int i=0; i<s.length(); i++) {
-            if(s[i] == '[') {
-                S.push(s[i]);
-            }
-            else {
-                if(!S.empty()) S.pop();
-                else misCnt++;
-            }
-        }
-        cout<<misCnt<<endl;
+    
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

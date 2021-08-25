@@ -12,10 +12,11 @@ void solve(vector<int> &nums, vector<vector<int> > &ans, int idx){
         ans.push_back(nums);
         return;
     }
-
+    unordered_set<int> S;
     for(int i=idx; i<nums.size(); i++){
-        if(i!=idx && nums[i]==nums[idx])
+        if(S.count(nums[i])>0)
             continue;
+        S.insert(nums[i]);
         swap(nums[i],nums[idx]);
         solve(nums,ans,idx+1);
         swap(nums[i],nums[idx]);
@@ -30,8 +31,8 @@ vector<vector<int> > permute(vector<int> nums){
 int main(int argc, char const *argv[])
 {
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 
     int n;

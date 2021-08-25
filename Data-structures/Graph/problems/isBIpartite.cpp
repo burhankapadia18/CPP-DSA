@@ -44,17 +44,17 @@ void dfs(int src, int parent, int color, vector<int> adj[], vector<int> &vis) {
         if(vis[x] == -1) {
             dfs(x,src,3-color,adj,vis);
         }
-        else if(x!=parent and color==vis[parent]) {
-            f = 1;
+        else if(x!=parent and color==vis[x]) {
+            f = 0;
             break;
         }
     }
 }
 bool isBipartite(vector<int> adj[], int V) {
     vector<int> vis(V+1,-1);
-    f = 0;
+    f = 1;
     dfs(1,1,1,adj,vis);
-    return !f;
+    return f;
 }
 
 int main(int argc, char const *argv[])

@@ -50,19 +50,19 @@ int main() {
 
    // 2Dmatrix search (sorted matrix)
    // **********************************
-   // int i=0, j = c-1, target;
-   // cin>>target;
-   // bool found = false;
-   // while(i < r && j >= 0){
-   //    if(arr[i][j] == target){
-   //       found = true;
-   //       break;
-   //    }
-   //    if(arr[i][j] > target)
-   //       j--;
-   //    else 
-   //       i++;
-   // }
+   int i=0, j = c-1, target;
+   cin>>target;
+   bool found = false;
+   while(i < r && j >= 0){
+      if(arr[i][j] == target){
+         found = true;
+         break;
+      }
+      if(arr[i][j] > target)
+         j--;
+      else 
+         i++;
+   }
    // if(found)
    //    cout<<"available";
    // else 

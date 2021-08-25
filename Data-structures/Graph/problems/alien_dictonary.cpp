@@ -35,25 +35,23 @@ void file_i_o()
     #endif
 }
 
-void solve(vector<string> &words)
-{
+void solve(vector<string> &words) {
     ump<char,vector<char> > adjlist;
     ump<char,int> indegree;
-    for(auto word:words)
-        for(auto ch:word)
-        {
+    for(auto word:words) {
+        for(auto ch:word) {
             adjlist[ch];
             indegree[ch] = 0;
         }
+    }
     int i=0, j=1;
-    while(j<words.size())
-    {
-        for(int k=0; k<words[i].length() && k<words[j].length(); k++)
-            if(words[i][k] != words[j][k])
-            {
+    while(j<words.size()) {
+        for(int k=0; k<words[i].length() && k<words[j].length(); k++) {
+            if(words[i][k] != words[j][k]) {
                 adjlist[words[i][k]].push_back(words[j][k]);
                 break;
             }
+        }
         i++; j++;
     }
     int n = adjlist.size();
@@ -65,20 +63,16 @@ void solve(vector<string> &words)
         if(i.ss == 0)
             Q.push(i.ff);
     string ans = "";
-    while(!Q.empty())
-    {
+    while(!Q.empty()) {
         char ch = Q.front(); Q.pop();
         ans += ch;
-        for(auto i:adjlist[ch])
-        {
+        for(auto i:adjlist[ch]) {
             if(--indegree[i] == 0)
                 Q.push(i);
         }
     }
-    if(ans.length() != n)
-        cout<<"";
-    else 
-        cout<<ans;
+    if(ans.length() != n) cout<<"";
+    else cout<<ans;
 }
 
 int main(int argc, char const *argv[])

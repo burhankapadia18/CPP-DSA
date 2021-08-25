@@ -38,24 +38,30 @@ void file_i_o()
 // https://www.geeksforgeeks.org/graph-coloring-applications/#:~:text=Graph%20coloring%20problem%20is%20to,are%20colored%20using%20same%20color.
 
 void chromaticNumber(vector<int> adj[], int V) {
-    int res[V];
-    bool available[V];
-    memset(res,-1,sizeof(res));
-    memset(available,0,sizeof(available));
+    // storing the color of each node
+    int color[V];
+    // to store the availability of color for neighbours
+    bool availableColor[V];
+    memset(color,-1,sizeof(color));
+    memset(availableColor,1,sizeof(availableColor));
     int cn = 0;
     loop(i,0,V-1) {
-        for(int j:adj[i])
-            if(res[j] != -1)
-                available[res[j]] = 1;
+        for(int j:adj[i])   // iterating over neighbours to check which colors are used
+            if(color[j] != -1)
+                // which means the neighbour is already colored and we cannot use this color to color the ith node
+                availableColor[color[j]] = 0;
+        // initially start checking with color 0
         int cr = 0;
         for(;cr<V;cr++)
-            if(available[cr] == false)
+            if(availableColor[cr]) // means cr is available for ith node
                 break;
-        res[i] = cr;
-        cn = max(cn,cr+1);
-        memset(available,0,sizeof(available));
+        // assign cr color to ith node
+        color[i] = cr;
+        cn = max(cn,cr+1);  // storing the max color number used for coloring the entire graph (using +1 because we are starting from 0)
+        // resetting the array for other node
+        memset(availableColor,0,sizeof(availableColor));
     }
-    for(int i:res)
+    for(int i:color)
         cout<<i<<" ";
     cout<<endl<<cn;
 }

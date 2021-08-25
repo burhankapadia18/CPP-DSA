@@ -40,17 +40,16 @@ void swap(int *x, int *y) {
     *x = *y;
     *y = temp;
 }
-class MinHeap
-{
+class MinHeap {
     int *harr; // pointer to array of elements in heap
     int capacity; // maximum possible size of min heap
     int heap_size; // Current number of elements in min heap
-public:
-    MinHeap(int capacity);
+    public:
+    MinHeap(int capacity);  // ctor of class
     void MinHeapify(int);
-    int parent(int i) { return (i-1)/2; }
-    int left(int i) { return (2*i + 1); }
-    int right(int i) { return (2*i + 2); }
+    int parent(int i) { return (i-1)/2; }   // returns the index of parent
+    int left(int i) { return (2*i + 1); }   // returns index of left child
+    int right(int i) { return (2*i + 2); }  // returns index of right child
     int extractMin();
     void decreaseKey(int i, int new_val);
     int getMin() { return harr[0]; }
@@ -58,17 +57,21 @@ public:
     void insertKey(int k);
 };
 MinHeap::MinHeap(int cap) {
+    // ctor
     heap_size = 0;
     capacity = cap;
     harr = new int[cap];
 }
 void MinHeap::insertKey(int k) {
     if (heap_size == capacity) {
+        // cannot insert more keys
         cout << "\nOverflow: Could not insertKey\n";
         return;
     }
+    // increase heap_size
     heap_size++;
-    int i = heap_size - 1;
+    // idx of last pos in array and put the element at that pos
+    int i = heap_size - 1; 
     harr[i] = k;
     while (i != 0 && harr[parent(i)] > harr[i]) {
        swap(&harr[i], &harr[parent(i)]);
