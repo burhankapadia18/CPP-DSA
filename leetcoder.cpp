@@ -43,6 +43,8 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
+    string s = "deeedbbcccbdaa";
+
     
 
     #ifndef ONLINE_JUDGE
