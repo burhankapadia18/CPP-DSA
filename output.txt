@@ -1,3 +1,8 @@
-a
+30
+18
+14
+-3
+-5
 
-Executed in: 0.45 ms
+
+Executed in: 0.365 ms

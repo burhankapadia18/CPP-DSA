@@ -6,10 +6,10 @@ int maxsum_subarray(int a[], int n){
     int currsum=0, maxsum = INT_MIN;
     for(int i=0; i<n; i++){
         currsum += a[i];
+        maxsum = max(currsum, maxsum);
         if(currsum <0){
             currsum = 0;
         }
-        maxsum = max(currsum, maxsum);
     }
     return maxsum;
 }
@@ -17,8 +17,8 @@ int maxsum_subarray(int a[], int n){
 int main() {
 
     #ifndef ONLINE_JUDGE
-        freopen("/Users/burhankapdawala/input.txt","r",stdin);
-        freopen("/Users/burhankapdawala/output.txt","w",stdout);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/input.txt","r",stdin);
+        freopen("/Users/burhankapdawala/Desktop/C++14/CPP-DSA/output.txt","w",stdout);
     #endif
 
     int n;

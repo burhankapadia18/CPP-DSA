@@ -65,6 +65,7 @@ vector<vi> pow_mtx(vector<vi> A, ll n) {
     vector<vi> X = pow_mtx(A,n/2);
     return xply(X,X);
 }
+// using matrix exponentiation
 ll compute(ll n, ll k) {
     if(n == 0) return 1;
     if(n<3) return n;
@@ -95,6 +96,28 @@ ll compute(ll n, ll k) {
     return ans;
 }
 
+// using dp
+ll compute_(ll n, ll k) {
+    // ll dp[n+1];
+    // memset(dp,0,sizeof(dp));
+    // dp[0] = 1;
+    // for(ll i=1; i<=n; i++) {
+    //     for(ll j=1; j<=k and i-j>=0; j++) {
+    //         dp[i] = dp[i] + dp[i-j];
+    //     }
+    // }
+    // return dp[n];
+    
+    // time optimized O(n) sliding window concept
+    ll dp[n+1];
+    dp[0] = 1;
+    dp[1] = 1;
+    loop(i,2,n) {
+        dp[i] = 2*dp[i-1] - (i-k-1>=0?dp[i-k-1]:0);
+    }
+    return dp[n];
+}
+
 int main(int argc, char const *argv[])
 {
     clock_t begin = clock();
@@ -104,7 +127,7 @@ int main(int argc, char const *argv[])
     ll n, k;
     cin>>n>>k;
 
-    cout<<compute(n,k);
+    cout<<compute_(n,k);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -36,50 +41,40 @@ void file_i_o()
 }
 
 /*
-Given an number x, you can do 3 differnt operations on x.
-    1. subtract 1 from x
-    2. if x is divisible by 2, then divide it by 2
-    3. if x is divisible by 3, then divide it by 3
-find no. of operations to reduce x to 1.
+Problem Name: Tilling Problem - II
+Problem Difficulty: 2
+Problem Constraints: 1 <= T<= 1000 <br>
+1 <= N,M <= 100000
+Problem Description:
+Given a floor of size n x m. Find the number of ways to tile the floor with tiles of size 1 x m. A tile can either be placed horizontally or vertically.
+
+Input Format: First line of input contains an integer T denoting the number of test cases. Then T test cases follow.
+The first line of each test case contains two integers N and M.
+Sample Input: 2
+2 3
+4 4
+Output Format: Print answer for every test case in a new line modulo 10^9+7.
+Sample Output: 1
+2
 */
 
-// top down approach
-int minStepsToOneTD(int x, vector<int> &dp) {
-    if(x == 2 or x == 3)
-        return 1;
-    if(x == 1)
+// recurisve
+int solve(int n, int m) {
+    if(n<0)
         return 0;
-    if(x < 1)
-        return INT_MAX;
-    if(dp[x] != 0)
-        return dp[x];
-    int div2, div3, sub1;
-    div2 = div3 = sub1 = INT_MAX;
-    if(x%2 == 0)
-        div2 = 1 + minStepsToOneTD(x/2,dp);
-    if(x%3 == 0)
-        div3 = 1 + minStepsToOneTD(x/3,dp);
-    sub1 = 1 + minStepsToOneTD(x-1,dp);
-    return dp[x] = min(sub1,min(div2,div3));
+    if(n==0) 
+        return 1;
+    return solve(n-1,m)+solve(n-m,m);
 }
 
-// bottom up approach
-int minStepsToOneBU(int x) {
-    vector<int> dp(x+1);
-    dp[0] = INT_MAX;
-    dp[1] = 0;
-    dp[2] = dp[3] = 1;
-    loop(i,4,x) {
-        int div2, div3, sub1;
-        div2 = div3 = sub1 = INT_MAX;
-        if(i%2 == 0)
-            div2 = 1 + dp[i/2];
-        if(i%3 == 0)
-            div3 = 1 + dp[i/3];
-        sub1 = 1 + dp[i-1];
-        dp[i] = min(sub1,min(div2,div3));
+// DP
+int solve_(int n, int m) {
+    int dp[n+1];
+    dp[0] = 1;
+    loop(i,1,n) {
+        dp[i] = (dp[i-1] + (i-m<0?0:dp[i-m]))%mod;
     }
-    return dp[x];
+    return dp[n];
 }
 
 int main(int argc, char const *argv[])
@@ -88,10 +83,13 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int x;
-    cin>>x;
-    vector<int> dp(x+1,0);
-    cout<<minStepsToOneTD(x,dp)<<" "<<minStepsToOneBU(x);
+    int t;
+    cin>>t;
+    while(t--) {
+        int n, m;
+        cin>>n>>m;
+        cout<<solve(n,m)<<" "<<solve_(n,m)<<endl;
+    }
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

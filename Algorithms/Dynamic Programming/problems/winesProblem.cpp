@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,7 +40,35 @@ void file_i_o()
     #endif
 }
 
+// https://www.geeksforgeeks.org/maximum-profit-sale-wines/
 
+// recursive method
+int solve(int arr[], int i, int j, int yr) {
+    if(i>j)
+        return 0;
+    if(i==j)
+        return arr[i]*yr;
+    int x, y;
+    x = arr[i]*yr + solve(arr,i+1,j,yr+1);
+    y = arr[j]*yr + solve(arr,i,j-1,yr+1);
+
+    return max(x,y);
+}
+
+// dp approach
+int solve(int arr[], int n) {
+    int dp[n][n];
+    // filling base case
+    loop(i,0,n-1) dp[i][i] = arr[i]*n;
+    int yr = n-1;
+    for(int k=1; k<n; k++) {
+        for(int i=0, j=k; i<n and j<n; i++, j++) {
+            dp[i][j] = max(arr[i]*yr+dp[i+1][j],arr[j]*yr+dp[i][j-1]);
+        }
+        yr--;
+    }
+    return dp[0][n-1];
+}
 
 int main(int argc, char const *argv[])
 {
@@ -43,9 +76,12 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    string s = "deeedbbcccbdaa";
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
 
-    cout<<'z'-'a';
+    cout<<solve(arr,0,n-1, 1)<<" "<<solve(arr,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

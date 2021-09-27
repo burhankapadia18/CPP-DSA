@@ -35,48 +35,50 @@ void file_i_o()
     #endif
 }
 
-// https://www.geeksforgeeks.org/bipartite-graph/
+/*
+Given an number x, you can do 3 differnt operations on x.
+    1. subtract 1 from x
+    2. if x is divisible by 2, then divide it by 2
+    3. if x is divisible by 3, then divide it by 3
+find no. of operations to reduce x to 1.
+*/
 
-bool f;
-void dfs(int src, int parent, int color, vector<int> adj[], vector<int> &vis) {
-    vis[src] = color;
-    for(int x:adj[src]) {
-        if(vis[x] == -1) {
-            dfs(x,src,3-color,adj,vis);
-        }
-        else if(x!=parent and color==vis[x]) {
-            f = 0;
-            break;
-        }
-    }
-}
-bool isBipartite(vector<int> adj[], int V) {
-    // doesn't worked in leetcode:886
-    vector<int> vis(V+1,-1);
-    f = 1;
-    dfs(1,1,1,adj,vis);
-    return f;
+// top down approach
+int minStepsToOneTD(int x, vector<int> &dp) {
+    if(x == 2 or x == 3)
+        return 1;
+    if(x == 1)
+        return 0;
+    if(x < 1)
+        return INT_MAX;
+    if(dp[x] != 0)
+        return dp[x];
+    int div2, div3, sub1;
+    div2 = div3 = sub1 = INT_MAX;
+    if(x%2 == 0)
+        div2 = 1 + minStepsToOneTD(x/2,dp);
+    if(x%3 == 0)
+        div3 = 1 + minStepsToOneTD(x/3,dp);
+    sub1 = 1 + minStepsToOneTD(x-1,dp);
+    return dp[x] = min(sub1,min(div2,div3));
 }
 
-// using bfs
-bool possibleBipartition(vector<int> graph[], int n) {
-    vector<int> vis(n+1,-1);
-    for(int i=1; i<=n; i++) {
-        if(vis[i] != -1) continue;
-        queue<int> Q;
-        Q.push(i);
-        vis[i] = 1;
-        while(!Q.empty()) {
-            int u = Q.front(); Q.pop();
-            for(int &v:graph[u]) {
-                if(vis[v] == -1) {
-                    Q.push(v); vis[v] = 3-vis[u];
-                }
-                else if(vis[v] == vis[u]) return 0;
-            }
-        }
+// bottom up approach
+int minStepsToOneBU(int x) {
+    int dp[x+1];
+    dp[0] = INT_MAX;
+    dp[1] = 0;
+    dp[2] = 1;
+    dp[3] = 1;
+    int div2, div3, sub1;
+    loop(i,4,x) {
+        div2 = div3 = sub1 = INT_MAX;
+        if(i%2==0) div2 = dp[i/2];
+        if(i%3==0) div3 = dp[i/3];
+        sub1 = dp[i-1];
+        dp[i] = 1 + min({div2,div3,sub1});
     }
-    return 1;
+    return dp[x];
 }
 
 int main(int argc, char const *argv[])
@@ -85,17 +87,9 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    int V, E;
-    cin>>V>>E;
-    vector<int> adj[V+1];
-    loop(i,1,E) {
-        int u, v;
-        cin>>u>>v;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-
-    cout<<isBipartite(adj,V);
+    int x;
+    cin>>x;
+    cout<<minStepsToOneBU(x);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
