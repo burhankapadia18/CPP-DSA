@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,6 +40,38 @@ void file_i_o()
     #endif
 }
 
+// https://www.interviewbit.com/problems/allocate-books/
+
+bool isPossible(int A[], int N, int mi, int B) {
+    int stu=1, sum=0;
+    loop(i,0,N-1) {
+        if(A[i]>mi) return 0;
+        if(A[i]+sum > mi) {
+            stu++;
+            sum = A[i];
+            if(stu>B) return 0;
+        }
+        else {
+            sum += A[i];
+        }
+    }
+    return 1;
+}
+int solve(int A[], int N, int B) {
+    int sum = accumulate(A,A+N,0);
+    int lo=0, hi=sum, ans=-1, mi;
+    while(lo<=hi) {
+        mi = mid(lo,hi);
+        if(isPossible(A,N,mi,B)) {
+            ans = mi;
+            hi = mi-1;
+        }
+        else {
+            lo = mi+1;
+        }
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,8 +79,13 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    
+    int n, b;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
+    cin>>b;
 
+    cout<<solve(arr,n,b);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

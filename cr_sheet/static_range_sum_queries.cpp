@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,6 +40,23 @@ void file_i_o()
     #endif
 }
 
+// https://cses.fi/problemset/task/1646
+
+void solve() {
+    ll n, q;
+    cin>>n>>q;
+    ll *arr = new ll[n];
+    for(ll i=0; i<n; i++) cin>>arr[i];
+    for(ll i=1; i<n; i++) arr[i] += arr[i-1];
+    ll a, b, ans;
+    while(q--) {
+        cin>>a>>b;
+        a--; b--;
+        ans = arr[b] - ((a-1)>=0?arr[a-1]:0);
+        cout<<ans<<endl;
+    }
+    delete[] arr;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,8 +64,7 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    
-
+    solve();
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,6 +40,32 @@ void file_i_o()
     #endif
 }
 
+// https://practice.geeksforgeeks.org/problems/queue-using-two-stacks/1
+
+class Queue {
+    stack<int> S1, S2;
+    public:
+    void push(int x) {
+        while(!S1.empty()) {
+            S2.push(S1.top());
+            S1.pop();
+        }
+        S1.push(x);
+        while(!S2.empty()) {
+            S1.push(S2.top());
+            S2.pop();
+        }
+    }
+    bool pop() {
+        if(S1.empty()) return 0;
+        S1.pop();
+        return 1;
+    }
+    int front() {
+        if(S1.empty()) return -1;
+        return S1.top();
+    }
+};
 
 int main(int argc, char const *argv[])
 {
@@ -42,8 +73,6 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    
-
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

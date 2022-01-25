@@ -104,7 +104,7 @@ int main(int argc, char const *argv[])
     int n;
     cin>>n;
     vector<vector<bool> > grid(n,vector<bool>(n,0));
-    Nqueen_optimized(grid,n,0);
+    countNqueen(grid,0,n);
     cout<<ans;
 
     #ifndef ONLINE_JUDGE

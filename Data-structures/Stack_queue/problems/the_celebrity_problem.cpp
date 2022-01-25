@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,6 +40,42 @@ void file_i_o()
     #endif
 }
 
+// https://practice.geeksforgeeks.org/problems/the-celebrity-problem/1
+
+// TC: O(n^2), SC: O(n)
+int celeb_find(vector<vector<int>> &arr) {
+    int n = arr.size();
+    vector<int> inOut(n,0);
+    loop(i,0,n-1) {
+        loop(j,0,n-1) {
+            if(arr[i][j]) {
+                inOut[i] -= 1;
+                inOut[j] += 1;
+            }
+        }
+    }
+    loop(i,0,n-1) {
+        if(inOut[i] == n-1) 
+            return i;
+    }
+    return -1;
+}
+
+// TC: O(n), SC: O(1)
+int find_celeb(vector<vector<int>> &arr) {
+    int n=arr.size(), celeb = 0;
+    loop(i,0,n-1) {
+        if(arr[celeb][i]) {
+            celeb = i;
+        }
+    }
+    loop(i,0,n-1) {
+        if(i!=celeb and (arr[celeb][i] or !arr[i][celeb])) {
+            return -1;
+        }
+    }
+    return celeb;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -42,8 +83,16 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    
+    int n;
+    cin>>n;
+    vector<vector<int>> arr(n,vector<int>(n));
+    loop(i,0,n-1) {
+        loop(j,0,n-1) {
+            cin>>arr[i][j];
+        }
+    }
 
+    cout<<celeb_find(arr);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();

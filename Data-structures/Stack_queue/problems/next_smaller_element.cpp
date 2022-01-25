@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//using namespace __gnu_pbds;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 // template<typename T>
 #define ll 				long long int
@@ -14,6 +15,7 @@ using namespace std;
 #define vs				vector<string>
 #define pii             pair<ll,ll>
 #define ump				unordered_map
+#define uset 			unordered_set
 #define mp 				map
 #define pq_max          priority_queue<ll>
 #define pq_min          priority_queue<ll,vi,greater<ll> >
@@ -22,6 +24,9 @@ using namespace std;
 #define mid(l,r)        (l+(r-l)/2)
 #define loop(i,a,b) 	for(int i=(a);i<=(b);i++)
 #define looprev(i,a,b) 	for(int i=(a);i>=(b);i--)
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+            tree_order_statistics_node_update>
+    ordered_set;
 
 
 void file_i_o()
@@ -35,6 +40,21 @@ void file_i_o()
     #endif
 }
 
+// https://www.geeksforgeeks.org/next-smaller-element/
+void next_smaller_element(int *arr, int n) {
+    int nse[n];
+    memset(nse,-1,sizeof(nse));
+    stack<int> S;
+    loop(i,0,n-1) {
+        while(!S.empty() and arr[S.top()]>arr[i]) {
+            nse[S.top()] = arr[i];
+            S.pop();
+        }
+        S.push(i);
+    }
+    for(int i:nse) cout<<i<<" ";
+}
+
 
 int main(int argc, char const *argv[])
 {
@@ -42,8 +62,12 @@ int main(int argc, char const *argv[])
     file_i_o();
 
     // write your code here
-    
+    int n;
+    cin>>n;
+    int arr[n];
+    loop(i,0,n-1) cin>>arr[i];
 
+    next_smaller_element(arr,n);
 
     #ifndef ONLINE_JUDGE
         clock_t end = clock();
